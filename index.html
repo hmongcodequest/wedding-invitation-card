@@ -1,0 +1,2256 @@
+﻿<!DOCTYPE html>
+<html lang="lo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ບັດເຊີນງານແຕ່ງງານ</title>
+    <script src="xlsx.full.min.js"></script>
+    <style>
+        /* ===== Fonts ===== */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Sans+Lao+Looped:wght@300;400;500;600;700&display=swap');
+
+        /* ===== Reset & Base ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #c9a227;
+            --gold-light: #e8d48b;
+            --gold-dark: #a8841f;
+            --cream: #fdf8ef;
+            --cream-dark: #f5ecdc;
+            --ink: #3d3a34;
+            --ink-light: #6b655a;
+            --rose: #b76e79;
+            --rose-light: #e8c4c9;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Noto Sans Lao Looped', sans-serif;
+            background: var(--cream);
+            color: var(--ink);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* ===== Toolbar (screen only) ===== */
+        .toolbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(253, 248, 239, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--gold-light);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-title {
+            font-family: 'Playfair Display', 'Noto Sans Lao Looped', serif;
+            font-size: 1.1rem;
+            color: var(--gold-dark);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .toolbar-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            font-family: 'Noto Sans Lao Looped', sans-serif;
+            font-size: 0.9rem;
+            padding: 8px 18px;
+            border-radius: 6px;
+            border: 1px solid var(--gold);
+            background: var(--white);
+            color: var(--gold-dark);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background: var(--gold);
+            color: var(--white);
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--gold-dark);
+            border-color: var(--gold-dark);
+        }
+
+        .guest-select {
+            font-family: 'Noto Sans Lao Looped', sans-serif;
+            font-size: 0.9rem;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--gold-light);
+            background: var(--white);
+            color: var(--ink);
+            cursor: pointer;
+            min-width: 220px;
+        }
+
+        /* ===== Searchable guest selector ===== */
+        .guest-search {
+            position: relative;
+            min-width: 280px;
+        }
+
+        .guest-search-input {
+            font-family: 'Noto Sans Lao Looped', sans-serif;
+            font-size: 0.9rem;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--gold-light);
+            background: var(--white);
+            color: var(--ink);
+            width: 100%;
+            box-sizing: border-box;
+            cursor: text;
+        }
+
+        .guest-search-input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.25);
+        }
+
+        .guest-search-dropdown {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            right: 0;
+            background: var(--white);
+            border: 1px solid var(--gold-light);
+            border-radius: 6px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+            max-height: 280px;
+            overflow-y: auto;
+            z-index: 200;
+        }
+
+        .guest-search-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            font-family: 'Noto Sans Lao Looped', sans-serif;
+            font-size: 0.9rem;
+            color: var(--ink);
+            border-bottom: 1px solid #f5efe2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .guest-search-item:last-child {
+            border-bottom: none;
+        }
+
+        .guest-search-item:hover,
+        .guest-search-item.active {
+            background: var(--gold-light);
+            color: var(--gold-dark);
+        }
+
+        .guest-search-empty {
+            padding: 10px 12px;
+            color: #999;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        /* ===== Paper size selector ===== */
+        .paper-select {
+            font-family: 'Noto Sans Lao Looped', sans-serif;
+            font-size: 0.9rem;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--gold-light);
+            background: var(--white);
+            color: var(--ink);
+            cursor: pointer;
+            outline: none;
+        }
+
+        .paper-select:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+        }
+
+        /* ===== A7 Traditional/Classic paper ===== */
+        /* A7 = 12.7 × 17.8 cm (5×7 in). Dedicated compact layout with readable typography. */
+        body.paper-a7 .invitation-card {
+            border: none;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        body.paper-a7 .card-frame {
+            width: 480px;
+            min-height: 673px;
+            margin: 0 auto;
+            padding: 17px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+        }
+
+        body.paper-a7 .content-page {
+            margin-top: 40px;
+            border-top: none;
+            padding-top: 0;
+        }
+
+        body.paper-a7 .card-content {
+            width: 100%;
+            line-height: 1.4;
+        }
+
+        /* A7 corner ornaments */
+        body.paper-a7 .corner {
+            width: 27px;
+            height: 27px;
+            border-width: 2.5px;
+        }
+        body.paper-a7 .corner-tl { top: 8px; left: 8px; }
+        body.paper-a7 .corner-tr { top: 8px; right: 8px; }
+        body.paper-a7 .corner-bl { bottom: 8px; left: 8px; }
+        body.paper-a7 .corner-br { bottom: 8px; right: 8px; }
+
+        /* A7 page 1 typography — balanced for 12.7×17.8 cm (5×7 in) card */
+        body.paper-a7 .ornament-top {
+            font-size: 1.3rem;
+            letter-spacing: 8px;
+            margin-bottom: 0;
+        }
+
+        body.paper-a7 .invite-label {
+            font-size: 1rem;
+            letter-spacing: 3px;
+            margin-bottom: 0;
+        }
+
+        body.paper-a7 .guest-name {
+            font-size: 2.05rem;
+            margin: 3px 0 3px;
+            line-height: 1.2;
+        }
+
+        body.paper-a7 .guest-position {
+            font-size: 1.15rem;
+            margin-bottom: 3px;
+        }
+
+        body.paper-a7 .divider {
+            margin: 8px 0;
+            gap: 14px;
+        }
+
+        body.paper-a7 .divider-line {
+            width: 68px;
+        }
+
+        body.paper-a7 .divider-icon {
+            font-size: 1.3rem;
+        }
+
+        body.paper-a7 .invite-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 7px;
+            max-width: 408px;
+        }
+
+        body.paper-a7 .couple-names {
+            margin: 7px 0;
+        }
+
+        body.paper-a7 .couple-row {
+            gap: 20px;
+        }
+
+        body.paper-a7 .person-title {
+            font-size: 0.95rem;
+            letter-spacing: 2px;
+        }
+
+        body.paper-a7 .person-name {
+            font-size: 1.65rem;
+            margin-top: 3px;
+        }
+
+        body.paper-a7 .ampersand {
+            font-size: 2.2rem;
+        }
+
+        body.paper-a7 .heart-photo-wrap {
+            width: 68px;
+            height: 61px;
+            margin: 7px auto;
+        }
+
+        body.paper-a7 .heart-photo-wrap::before {
+            inset: -5px;
+        }
+
+        body.paper-a7 .wedding-date {
+            margin: 7px 0;
+            padding: 7px 20px;
+        }
+
+        body.paper-a7 .date-label {
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+        }
+
+        body.paper-a7 .date-value {
+            font-size: 1.55rem;
+            margin-top: 3px;
+        }
+
+        body.paper-a7 .time-value {
+            font-size: 1.05rem;
+            margin-top: 3px;
+        }
+
+        body.paper-a7 .venue {
+            margin-top: 7px;
+            font-size: 1.05rem;
+        }
+
+        body.paper-a7 .venue-label {
+            font-size: 0.9rem;
+        }
+
+        body.paper-a7 .venue-name {
+            margin-top: 3px;
+        }
+
+        body.paper-a7 .closing {
+            margin-top: 3px;
+        }
+
+        body.paper-a7 .ornament-bottom {
+            font-size: 1.3rem;
+            letter-spacing: 7px;
+            margin-top: 7px;
+        }
+
+        /* A7 page 2 typography — balanced for 12.7×17.8 cm (5×7 in) card */
+        body.paper-a7 .content-title {
+            font-size: 1.75rem;
+            margin-bottom: 0;
+        }
+
+        body.paper-a7 .content-subtitle {
+            font-size: 1rem;
+            margin-bottom: 3px;
+        }
+
+        body.paper-a7 .content-section {
+            margin-bottom: 3px;
+        }
+
+        body.paper-a7 .content-section-title {
+            font-size: 1.2rem;
+            margin-bottom: 2px;
+            gap: 14px;
+        }
+
+        body.paper-a7 .content-section-title::before,
+        body.paper-a7 .content-section-title::after {
+            width: 44px;
+        }
+
+        body.paper-a7 .schedule-list {
+            max-width: 100%;
+        }
+
+        body.paper-a7 .schedule-item {
+            gap: 17px;
+            padding: 0;
+        }
+
+        body.paper-a7 .schedule-time {
+            font-size: 1.05rem;
+            min-width: 88px;
+        }
+
+        body.paper-a7 .schedule-desc {
+            font-size: 1.05rem;
+        }
+
+        body.paper-a7 .info-grid {
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            max-width: 100%;
+        }
+
+        body.paper-a7 .info-card {
+            padding: 3px 10px;
+        }
+
+        body.paper-a7 .info-icon {
+            font-size: 1.35rem;
+            margin-bottom: 2px;
+        }
+
+        body.paper-a7 .info-label {
+            font-size: 0.85rem;
+            margin-bottom: 3px;
+        }
+
+        body.paper-a7 .info-value {
+            font-size: 1rem;
+        }
+
+        /* Blessing message is too much content for a small A7 card */
+        body.paper-a7 .message-box {
+            display: none;
+        }
+
+        body.paper-a7 .signature {
+            margin-top: 7px;
+        }
+
+        body.paper-a7 .signature-name {
+            font-size: 1.45rem;
+        }
+
+        body.paper-a7 .signature-role {
+            font-size: 0.9rem;
+            margin-top: 3px;
+        }
+
+        /* ===== Card Container ===== */
+        .card-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* ===== Invitation Card ===== */
+        .invitation-card {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+            border: 1px solid var(--gold-light);
+            position: relative;
+        }
+
+        /* Decorative border frame */
+        .card-frame {
+            border: 3px double var(--gold);
+            border-radius: 8px;
+            margin: 14px;
+            padding: 30px 40px;
+            position: relative;
+            background:
+                radial-gradient(circle at 50% 0%, rgba(201, 162, 39, 0.08), transparent 60%),
+                linear-gradient(180deg, var(--cream) 0%, var(--white) 30%, var(--white) 70%, var(--cream) 100%);
+        }
+
+        /* Corner ornaments */
+        .corner {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-color: var(--gold);
+            border-style: solid;
+            opacity: 0.7;
+        }
+        .corner-tl { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+        .corner-tr { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
+        .corner-bl { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
+        .corner-br { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+        /* ===== Card Content ===== */
+        .card-content {
+            text-align: center;
+            position: relative;
+        }
+
+        .ornament-top {
+            font-size: 1.6rem;
+            color: var(--gold);
+            letter-spacing: 8px;
+            margin-bottom: 6px;
+        }
+
+        .invite-label {
+            font-size: 0.95rem;
+            color: var(--ink-light);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .guest-name {
+            font-family: 'Playfair Display', 'Noto Sans Lao Looped', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--gold-dark);
+            margin: 10px 0 4px;
+            line-height: 1.3;
+        }
+
+        .guest-position {
+            font-size: 1rem;
+            color: var(--rose);
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 18px 0;
+        }
+
+        .divider-line {
+            height: 1px;
+            width: 80px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .divider-icon {
+            color: var(--gold);
+            font-size: 1.1rem;
+        }
+
+        .invite-text {
+            font-size: 1.05rem;
+            color: var(--ink);
+            max-width: 520px;
+            margin: 0 auto 20px;
+            line-height: 2;
+        }
+
+        .couple-names {
+            margin: 24px 0;
+        }
+
+        .couple-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .person {
+            text-align: center;
+        }
+
+        .person-title {
+            font-size: 0.9rem;
+            color: var(--ink-light);
+            letter-spacing: 2px;
+        }
+
+        .person-name {
+            font-family: 'Playfair Display', 'Noto Sans Lao Looped', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--ink);
+            margin-top: 4px;
+        }
+
+        .ampersand {
+            font-family: 'Playfair Display', 'Noto Sans Lao Looped', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            font-style: italic;
+            line-height: 1;
+        }
+
+        /* ===== Heart-shaped photo ===== */
+        .heart-photo-wrap {
+            margin: 24px auto;
+            position: relative;
+            width: 220px;
+            height: 200px;
+        }
+
+        /* Gold border heart (behind the photo heart) */
+        .heart-photo-wrap::before {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+            clip-path: url(#heartClip);
+            filter: drop-shadow(0 4px 12px rgba(201, 162, 39, 0.35));
+        }
+
+        .heart-photo {
+            position: absolute;
+            inset: 0;
+            clip-path: url(#heartClip);
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--rose-light), var(--cream));
+        }
+
+        .heart-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .wedding-date {
+            margin: 20px 0;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, var(--cream), var(--cream-dark));
+            border: 1px solid var(--gold-light);
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .date-label {
+            font-size: 0.85rem;
+            color: var(--ink-light);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .date-value {
+            font-family: 'Playfair Display', 'Noto Sans Lao Looped', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--gold-dark);
+            margin-top: 4px;
+        }
+
+        .time-value {
+            font-family: 'Noto Sans Lao Looped', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--rose);
+            margin-top: 6px;
+        }
+
+        .venue {
+            margin-top: 16px;
+            font-size: 1rem;
+            color: var(--ink);
+        }
+
+        .venue-label {
+            color: var(--ink-light);
+            font-size: 0.9rem;
+        }
+
+        .venue-name {
+            font-weight: 600;
+            color: var(--rose);
+            margin-top: 4px;
+        }
+
+        .closing {
+            margin-top: 24px;
+            font-size: 0.95rem;
+            color: var(--ink-light);
+            font-style: italic;
+        }
+
+        .ornament-bottom {
+            font-size: 1.4rem;
+            color: var(--gold);
+            letter-spacing: 6px;
+            margin-top: 20px;
+        }
+
+        /* ===== Page 2: Content Page ===== */
+        .content-page {
+            margin-top: 30px;
+            border-top: 2px solid var(--gold-light);
+            padding-top: 30px;
+        }
+
+        .content-title {
+            font-family: 'Playfair Display', 'Noto Sans Lao Looped', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold-dark);
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .content-subtitle {
+            font-size: 1rem;
+            color: var(--ink-light);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .content-section {
+            margin-bottom: 30px;
+        }
+
+        .content-section-title {
+            font-family: 'Playfair Display', 'Noto Sans Lao Looped', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--gold-dark);
+            text-align: center;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .content-section-title::before,
+        .content-section-title::after {
+            content: '';
+            height: 1px;
+            width: 50px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .schedule-list {
+            list-style: none;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .schedule-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--gold-light);
+        }
+
+        .schedule-item:last-child {
+            border-bottom: none;
+        }
+
+        .schedule-time {
+            font-weight: 600;
+            color: var(--rose);
+            min-width: 100px;
+            text-align: right;
+        }
+
+        .schedule-desc {
+            color: var(--ink);
+            text-align: left;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        .info-card {
+            background: var(--cream);
+            border: 1px solid var(--gold-light);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .info-icon {
+            font-size: 1.6rem;
+            margin-bottom: 6px;
+        }
+
+        .info-label {
+            font-size: 0.85rem;
+            color: var(--ink-light);
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: var(--ink);
+            font-size: 0.95rem;
+        }
+
+        .message-box {
+            background: linear-gradient(135deg, var(--cream), var(--cream-dark));
+            border: 1px solid var(--gold-light);
+            border-radius: 8px;
+            padding: 24px;
+            max-width: 560px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .message-box p {
+            font-size: 1rem;
+            color: var(--ink);
+            line-height: 2;
+            margin-bottom: 12px;
+        }
+
+        .message-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .signature {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .signature-name {
+            font-family: 'Playfair Display', 'Noto Sans Lao Looped', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--gold-dark);
+        }
+
+        .signature-role {
+            font-size: 0.9rem;
+            color: var(--ink-light);
+            margin-top: 4px;
+        }
+
+        /* ===== Card Size Info (screen only) ===== */
+        .size-info-section {
+            max-width: 900px;
+            margin: 30px auto 0;
+            padding: 0 20px;
+        }
+
+        .size-info-card {
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid var(--gold-light);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 24px 30px;
+        }
+
+        .size-info-title {
+            font-family: 'Playfair Display', 'Noto Sans Lao Looped', serif;
+            font-size: 1.2rem;
+            color: var(--gold-dark);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .size-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .size-info-item {
+            background: var(--cream);
+            border: 1px solid var(--gold-light);
+            border-radius: 8px;
+            padding: 14px 16px;
+            text-align: center;
+        }
+
+        .size-info-label {
+            font-size: 0.85rem;
+            color: var(--ink-light);
+            margin-bottom: 4px;
+        }
+
+        .size-info-value {
+            font-weight: 600;
+            color: var(--ink);
+            font-size: 1rem;
+        }
+
+        .size-info-note {
+            margin-top: 14px;
+            font-size: 0.9rem;
+            color: var(--ink-light);
+            line-height: 1.8;
+            border-top: 1px dashed var(--gold-light);
+            padding-top: 12px;
+        }
+
+        /* ===== Guest List Section (screen only) ===== */
+        .guest-list-section {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .guest-list-card {
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid var(--gold-light);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+        }
+
+        .guest-list-title {
+            font-family: 'Playfair Display', 'Noto Sans Lao Looped', serif;
+            font-size: 1.4rem;
+            color: var(--gold-dark);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .guest-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .guest-table th {
+            background: var(--cream);
+            color: var(--gold-dark);
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 2px solid var(--gold-light);
+        }
+
+        .guest-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--cream-dark);
+            font-size: 0.95rem;
+        }
+
+        .guest-table tr:hover td {
+            background: var(--cream);
+        }
+
+        .guest-table .num {
+            width: 40px;
+            color: var(--ink-light);
+        }
+
+        /* ===== Guest List Filters ===== */
+        .guest-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .guest-filters .filter-input,
+        .guest-filters .filter-select {
+            font-family: 'Noto Sans Lao Looped', sans-serif;
+            font-size: 0.9rem;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--gold-light);
+            background: var(--white);
+            color: var(--ink);
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .guest-filters .filter-input:focus,
+        .guest-filters .filter-select:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+        }
+
+        .guest-filters .filter-input {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .guest-filters .filter-select {
+            min-width: 130px;
+            cursor: pointer;
+        }
+
+        .guest-filters .filter-clear {
+            font-family: 'Noto Sans Lao Looped', sans-serif;
+            font-size: 0.85rem;
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: 1px solid var(--gold-light);
+            background: var(--cream);
+            color: var(--ink-light);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .guest-filters .filter-clear:hover {
+            background: var(--rose-light);
+            border-color: var(--rose);
+            color: var(--rose);
+        }
+
+        .guest-count {
+            font-size: 0.85rem;
+            color: var(--ink-light);
+            margin-bottom: 10px;
+        }
+
+        .guest-count strong {
+            color: var(--gold-dark);
+        }
+
+        .guest-table tr.hidden-row {
+            display: none;
+        }
+
+        /* ===== Print Status Button ===== */
+        .print-status-btn {
+            font-family: 'Noto Sans Lao Looped', sans-serif;
+            font-size: 0.8rem;
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .print-status-btn.printed {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-color: #a5d6a7;
+        }
+
+        .print-status-btn.printed:hover {
+            background: #c8e6c9;
+        }
+
+        .print-status-btn.not-printed {
+            background: #fafafa;
+            color: #757575;
+            border-color: #e0e0e0;
+        }
+
+        .print-status-btn.not-printed:hover {
+            background: #eeeeee;
+            border-color: #bdbdbd;
+        }
+
+        /* ===== Pagination ===== */
+        .guest-table-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            font-family: 'Noto Sans Lao Looped', sans-serif;
+            font-size: 0.85rem;
+            min-width: 34px;
+            height: 34px;
+            padding: 0 10px;
+            border-radius: 6px;
+            border: 1px solid var(--gold-light);
+            background: var(--white);
+            color: var(--ink);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .page-btn:hover:not(:disabled) {
+            background: var(--cream);
+            border-color: var(--gold);
+        }
+
+        .page-btn.active {
+            background: var(--gold);
+            color: var(--white);
+            border-color: var(--gold);
+            font-weight: 600;
+        }
+
+        .page-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .page-info {
+            font-size: 0.85rem;
+            color: var(--ink-light);
+        }
+
+        .limit-select {
+            font-family: 'Noto Sans Lao Looped', sans-serif;
+            font-size: 0.85rem;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--gold-light);
+            background: var(--white);
+            color: var(--ink);
+            cursor: pointer;
+            outline: none;
+        }
+
+        .limit-select:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+        }
+
+        /* ===== Print Styles ===== */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 12mm;
+            }
+
+            /* A7 Traditional/Classic card page (12.7 × 17.8 cm / 5×7 in) */
+            @page a7page {
+                size: 127mm 178mm portrait;
+                margin: 0;
+            }
+
+            body.paper-a7 .invitation-card {
+                page: a7page;
+            }
+
+            /* A7 card pages: exact sheet size, no shadow */
+            body.paper-a7 .card-frame {
+                width: 127mm;
+                height: 178mm;
+                min-height: 178mm;
+                margin: 0;
+                padding: 4mm 6mm;
+                box-shadow: none;
+            }
+
+            body.paper-a7 .content-page {
+                margin-top: 0;
+            }
+
+            body {
+                background: var(--white);
+            }
+
+            .toolbar,
+            .guest-list-section,
+            .size-info-section {
+                display: none !important;
+            }
+
+            .card-container {
+                max-width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            .invitation-card {
+                box-shadow: none;
+                border: none;
+                border-radius: 0;
+            }
+
+            .card-frame {
+                border: 3px double var(--gold);
+                margin: 0;
+                padding: 20px 30px;
+                min-height: 250mm;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* Each card page starts on its own sheet */
+            #page1 {
+                page-break-after: always;
+            }
+
+            .card-content {
+                width: 100%;
+            }
+
+            .guest-name {
+                font-size: 2rem;
+            }
+
+            .person-name {
+                font-size: 1.6rem;
+            }
+
+            .date-value {
+                font-size: 1.4rem;
+            }
+
+            .time-value {
+                font-size: 1rem;
+            }
+
+            /* Page 2 print styles */
+            .content-page {
+                margin-top: 0;
+                border-top: none;
+                padding-top: 0;
+                min-height: 250mm;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            /* Print only page 1 */
+            body.print-page1 #page2 {
+                display: none !important;
+            }
+
+            /* Print only page 2 */
+            body.print-page2 #page1 {
+                display: none !important;
+            }
+
+            .content-title {
+                font-size: 1.6rem;
+            }
+
+            .heart-photo-wrap {
+                width: 180px;
+                height: 165px;
+            }
+
+            .content-section-title {
+                font-size: 1.1rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            /* Ensure colors print */
+            * {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 600px) {
+            .card-frame {
+                padding: 20px;
+                margin: 8px;
+            }
+
+            .guest-name {
+                font-size: 1.6rem;
+            }
+
+            .person-name {
+                font-size: 1.4rem;
+            }
+
+            .ampersand {
+                font-size: 2rem;
+            }
+
+            .date-value {
+                font-size: 1.3rem;
+            }
+
+            .heart-photo-wrap {
+                width: 170px;
+                height: 155px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .toolbar {
+                padding: 10px 16px;
+            }
+
+            .guest-search {
+                min-width: 100%;
+            }
+
+            .paper-select {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .toolbar-actions {
+                width: 100%;
+            }
+
+            .btn {
+                flex: 1;
+                text-align: center;
+            }
+        }
+
+        /* ===== 3-Column Layout (wide screens) ===== */
+        @media (min-width: 1280px) {
+            body {
+                display: grid;
+                grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr) minmax(0, 1.4fr);
+                grid-template-areas:
+                    "toolbar toolbar toolbar"
+                    "card info guests";
+                align-items: start;
+                column-gap: 28px;
+                padding: 0 28px;
+            }
+
+            .toolbar {
+                grid-area: toolbar;
+            }
+
+            .card-container {
+                grid-area: card;
+                max-width: 100%;
+                margin: 40px 0 0;
+                padding: 0;
+                min-width: 0;
+            }
+
+            .size-info-section {
+                grid-area: info;
+                max-width: 100%;
+                margin: 40px 0 0;
+                padding: 0;
+                min-width: 0;
+            }
+
+            .guest-list-section {
+                grid-area: guests;
+                max-width: 100%;
+                margin: 40px 0 40px;
+                padding: 0;
+                min-width: 0;
+            }
+
+            .guest-table th,
+            .guest-table td {
+                padding: 8px 8px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SVG clip path for heart shape -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <clipPath id="heartClip" clipPathUnits="objectBoundingBox">
+                <path d="M0.5,0.95 C0.2,0.7 0,0.5 0,0.3 C0,0.12 0.12,0 0.3,0 C0.4,0 0.48,0.05 0.5,0.12 C0.52,0.05 0.6,0 0.7,0 C0.88,0 1,0.12 1,0.3 C1,0.5 0.8,0.7 0.5,0.95 Z"/>
+            </clipPath>
+        </defs>
+    </svg>
+
+    <!-- ===== Toolbar ===== -->
+    <div class="toolbar">
+        <div class="toolbar-title">💍 ບັດເຊີນງານແຕ່ງງານ</div>
+        <div class="toolbar-actions">
+            <div class="guest-search" id="guestSearch">
+                <input type="text" id="guestSearchInput" class="guest-search-input"
+                       placeholder="🔍 ຄົ້ນຫາ ແລະ ເລືອກແຂກ..."
+                       autocomplete="off" aria-label="ຄົ້ນຫາ ແລະ ເລືອກແຂກ">
+                <div class="guest-search-dropdown" id="guestSearchDropdown" hidden></div>
+            </div>
+            <select id="guestSelect" class="guest-select" aria-label="ເລືອກແຂກ" hidden>
+                <option value="">— ເລືອກແຂກເພື່ອສະແດງບັດ —</option>
+            </select>
+            <select id="paperSelect" class="paper-select" aria-label="ຂະໜາດເຈ້ຍ" onchange="setPaperSize(this.value)">
+                <option value="a4">📄 A4 (210×297 ມມ)</option>
+                <option value="a7">💌 A7 (12.7×17.8 ຊມ / 5×7 ນິ້ວ)</option>
+            </select>
+            <button class="btn" onclick="printPage('page1')">🖨️ ພິມໜ້າປົກ</button>
+            <button class="btn" onclick="printPage('page2')">🖨️ ພິມໜ້າເນື້ອໃນ</button>
+            <button class="btn btn-primary" onclick="printPage('all')">🖨️ ພິມທັງສອງໜ້າ</button>
+        </div>
+    </div>
+
+    <!-- ===== Invitation Card ===== -->
+    <div class="card-container">
+        <div class="invitation-card">
+            <!-- ===== Page 1: Cover ===== -->
+            <div class="card-frame" id="page1">
+                <div class="corner corner-tl"></div>
+                <div class="corner corner-tr"></div>
+                <div class="corner corner-bl"></div>
+                <div class="corner corner-br"></div>
+
+                <div class="card-content">
+                    <div class="ornament-top">❀ ❀ ❀</div>
+                    <div class="invite-label">ຂໍເຊີນທ່ານ</div>
+                    <div class="guest-name" id="guestName">—</div>
+                    <div class="guest-position" id="guestPosition"></div>
+
+                    <div class="divider">
+                        <div class="divider-line"></div>
+                        <div class="divider-icon">✦</div>
+                        <div class="divider-line"></div>
+                    </div>
+
+                    <div class="invite-text">
+                        ກະລຸນາມາຮ່ວມງານມຸງທຸນ ແລະ ສະເຫຼີມສະຫຼອງຄວາມສຸກ
+                        ໃນວັນມຸງທຸນຂອງ
+                    </div>
+
+                    <div class="couple-names">
+                        <div class="couple-row">
+                            <div class="person">
+                                <div class="person-title" id="brideTitle"></div>
+                                <div class="person-name" id="brideName"></div>
+                            </div>
+                            <div class="ampersand">&amp;</div>
+                            <div class="person">
+                                <div class="person-title" id="groomTitle"></div>
+                                <div class="person-name" id="groomName"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Heart-shaped photo -->
+                    <div class="heart-photo-wrap">
+                        <div class="heart-photo">
+                            <img src="placeholder-photo.svg" alt="ຮູບຄູ່ບ່າວສາວ">
+                        </div>
+                    </div>
+
+                    <div class="wedding-date">
+                        <div class="date-label">ວັນທີ່ຈັດງານ</div>
+                        <div class="date-value" id="weddingDate">—</div>
+                        <div class="time-value" id="weddingTime">—</div>
+                    </div>
+
+                    <div class="venue">
+                        <div class="venue-label">ສະຖານທີ່ຈັດງານ</div>
+                        <div class="venue-name" id="venueName">—</div>
+                    </div>
+
+                    <div class="closing">
+                        ຂໍຂອບໃຈທີ່ກະລຸນາມາຮ່ວມງານໃນຄັ້ງນີ້
+                    </div>
+
+                    <div class="ornament-bottom">❀ ❀ ❀</div>
+                </div>
+            </div>
+
+            <!-- ===== Page 2: Content ===== -->
+            <div class="card-frame content-page" id="page2">
+                <div class="corner corner-tl"></div>
+                <div class="corner corner-tr"></div>
+                <div class="corner corner-bl"></div>
+                <div class="corner corner-br"></div>
+
+                <div class="card-content">
+                    <div class="ornament-top">❀ ❀ ❀</div>
+                    <div class="content-title">ກຳນົດການງານ</div>
+                    <div class="content-subtitle">ພິທີມຸງທຸນ ແລະ ສະເຫຼີມສະຫຼອງ</div>
+
+                    <!-- Schedule + Info (side by side on A7) -->
+                    <div class="content-sections-row">
+                        <div class="content-section">
+                            <div class="content-section-title">ກຳນົດເວລາ</div>
+                            <ul class="schedule-list">
+                                <li class="schedule-item">
+                                    <span class="schedule-time">11:30</span>
+                                    <span class="schedule-desc">ຮັບແຂກ ແລະ ລົງທະບຽນ</span>
+                                </li>
+                                <li class="schedule-item">
+                                    <span class="schedule-time">12:00</span>
+                                    <span class="schedule-desc">ພິທີມຸງທຸນ ແລະ ອວຍພອນໄຊ</span>
+                                </li>
+                                <li class="schedule-item">
+                                    <span class="schedule-time">12:30</span>
+                                    <span class="schedule-desc">ຮັບປະທານອາຫານທ່ຽງ</span>
+                                </li>
+                                <li class="schedule-item">
+                                    <span class="schedule-time">14:00</span>
+                                    <span class="schedule-desc">ສະເຫຼີມສະຫຼອງ ແລະ ບັນເທີງ</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="content-section">
+                            <div class="content-section-title">ຂໍ້ມູນການຕິດຕໍ່</div>
+                            <div class="info-grid">
+                                <div class="info-card">
+                                    <div class="info-icon">📍</div>
+                                    <div class="info-label">ສະຖານທີ່</div>
+                                    <div class="info-value" id="contentVenue">—</div>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-icon">📅</div>
+                                    <div class="info-label">ວັນທີ</div>
+                                    <div class="info-value" id="contentDate">—</div>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-icon">🕐</div>
+                                    <div class="info-label">ເວລາ</div>
+                                    <div class="info-value" id="contentTime">—</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Message -->
+                    <div class="content-section">
+                        <div class="content-section-title">ຂໍ້ຄວາມອວຍພອນ</div>
+                        <div class="message-box">
+                            <p>
+                                ຂໍອວຍພອນໄຊອັນປະເສີດໃຫ້ຄູ່ບ່າວສາວ
+                                ຈົ່ງມີຄວາມສຸກ ຄວາມຮັກ ແລະ ຄວາມເຂົ້າໃຈກັນ
+                                ຕະຫຼອດໄປ
+                            </p>
+                            <p>
+                                ຂໍໃຫ້ຊີວິດຄູ່ສົມລົດຈົ່ງມີແຕ່ຄວາມສຸກ
+                                ຄວາມຈະເລີນຮຸ່ງເຮືອງ ແລະ ມີຄອບຄົວທີ່ອົບອຸ່ນ
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Signature -->
+                    <div class="signature">
+                        <div class="signature-name" id="signatureNames">—</div>
+                        <div class="signature-role">ຄູ່ບ່າວສາວ</div>
+                    </div>
+
+                    <div class="ornament-bottom">❀ ❀ ❀</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Card Size Info (screen only) ===== -->
+    <div class="size-info-section">
+        <div class="size-info-card">
+            <div class="size-info-title">📐 ຂະໜາດບັດເຊີນ</div>
+            <div class="size-info-grid">
+                <div class="size-info-item">
+                    <div class="size-info-label">ຂະໜາດເຈ້ຍ</div>
+                    <div class="size-info-value" id="paperSizeValue">A4 (210 × 297 ມມ)</div>
+                </div>
+                <div class="size-info-item">
+                    <div class="size-info-label">ຈຳນວນໜ້າ</div>
+                    <div class="size-info-value">2 ໜ້າ (ປົກ + ເນື້ອໃນ)</div>
+                </div>
+                <div class="size-info-item">
+                    <div class="size-info-label">ການພິມ</div>
+                    <div class="size-info-value">ພິມສີ ຫຼື ຂາວ-ດຳ</div>
+                </div>
+                <div class="size-info-item">
+                    <div class="size-info-label">ທິດທາງ</div>
+                    <div class="size-info-value">ຕັ້ງ (Portrait)</div>
+                </div>
+            </div>
+            <div class="size-info-note" id="paperSizeNote">
+                💡 <strong>ຄຳແນະນຳ:</strong> ບັດເຊີນຖືກອອກແບບສຳລັບພິມໃສ່ເຈ້ຍ A4 ແນວຕັ້ງ. ເມື່ອພິມ, ກະລຸນາຕັ້ງຄ່າເຈ້ຍເປັນ A4 ແລະ ກຳນົດຂອບໜ້າເຈ້ຍ (margin) ປະມານ 12 ມມ ເພື່ອໃຫ້ໄດ້ຜົນງານທີ່ສວຍງາມທີ່ສຸດ. ຖ້າຕ້ອງການຂະໜາດນ້ອຍກວ່າ (ເຊັ່ນ A5), ສາມາດຕັ້ງຄ່າການພິມໃຫ້ຫຼຸດຂະໜາດລົງ 50% ໄດ້.
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Guest List (screen only) ===== -->
+    <div class="guest-list-section">
+        <div class="guest-list-card">
+            <div class="guest-list-title">📋 ລາຍຊື່ແຂກທີ່ເຊີນ</div>
+
+            <!-- Filters -->
+            <div class="guest-filters">
+                <input type="text" id="filterSearch" class="filter-input" placeholder="🔍 ຄົ້ນຫາຊື່ ຫຼື ນາມສະກຸນ..." aria-label="ຄົ້ນຫາແຂກ">
+                <select id="filterPosition" class="filter-select" aria-label="ກັ່ນຕອງຕາມຕຳແໜ່ງ">
+                    <option value="">ຕຳແໜ່ງທັງໝົດ</option>
+                </select>
+                <select id="filterReady" class="filter-select" aria-label="ກັ່ນຕອງຕາມສະຖານະ">
+                    <option value="">ສະຖານະທັງໝົດ</option>
+                </select>
+                <select id="filterPrinted" class="filter-select" aria-label="ກັ່ນຕອງຕາມສະຖານະການພິມ">
+                    <option value="">ສະຖານະການພິມທັງໝົດ</option>
+                    <option value="printed">✅ ພິມແລ້ວ</option>
+                    <option value="not-printed">⬜ ຍັງບໍ່ທັນພິມ</option>
+                </select>
+                <button class="filter-clear" onclick="clearFilters()">✕ ລ້າງການກັ່ນຕອງ</button>
+            </div>
+
+            <div class="guest-count" id="guestCount"></div>
+
+            <table class="guest-table">
+                <thead>
+                    <tr>
+                        <th class="num">#</th>
+                        <th>ຄຳນຳໜ້າ</th>
+                        <th>ຊື່</th>
+                        <th>ນາມສະກຸນ</th>
+                        <th>ຕຳແໜ່ງ</th>
+                        <th>ສະຖານະ</th>
+                        <th>ສະຖານະການພິມ</th>
+                    </tr>
+                </thead>
+                <tbody id="guestTableBody"></tbody>
+            </table>
+
+            <div class="guest-table-footer">
+                <div class="pagination">
+                    <span class="page-info" id="pageInfo"></span>
+                    <button class="page-btn" id="prevPageBtn" onclick="changePage(-1)" aria-label="ໜ້າກ່ອນ">‹</button>
+                    <div id="pageNumbers" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+                    <button class="page-btn" id="nextPageBtn" onclick="changePage(1)" aria-label="ໜ້າຕໍ່ໄປ">›</button>
+                </div>
+                <div>
+                    <label class="page-info" for="limitSelect">ສະແດງ:</label>
+                    <select id="limitSelect" class="limit-select" aria-label="ຈຳນວນແຖວຕໍ່ໜ້າ">
+                        <option value="5">5 ຄົນ/ໜ້າ</option>
+                        <option value="10">10 ຄົນ/ໜ້າ</option>
+                        <option value="20">20 ຄົນ/ໜ້າ</option>
+                        <option value="0">ທັງໝົດ</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== Load data =====
+        let weddingData = null;
+        let currentPage = 1;
+        let pageSize = 5;
+        let filteredGuestIndices = [];
+
+        async function loadData() {
+            try {
+                // Try loading directly from the Excel file first
+                const xlsxLoaded = await loadFromExcel();
+                if (!xlsxLoaded) {
+                    // Fallback: load from data.json
+                    console.warn('Excel file not available, falling back to data.json');
+                    const response = await fetch('data.json');
+                    weddingData = await response.json();
+                }
+                populateGuestSelect();
+                populateFilterOptions();
+                applyQueryParams();
+                applyFilters();
+                updateCard();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('guestName').textContent = 'ບໍ່ສາມາດໂຫຼດຂໍ້ມູນໄດ້';
+            }
+        }
+
+        // ===== Load data directly from wedding-invitation-card.xlsx =====
+        async function loadFromExcel() {
+            try {
+                // Cache-bust so edits to the Excel file are always picked up
+                const response = await fetch('wedding-invitation-card.xlsx?t=' + Date.now());
+                if (!response.ok) return false;
+                const buffer = await response.arrayBuffer();
+                const workbook = XLSX.read(buffer, { type: 'array' });
+                const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                // Read as array of arrays (row 0 = headers, row 1 = sub-headers, row 2+ = data)
+                const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+
+                if (rows.length < 3) return false;
+
+                // Bride: row 3 (index 2), columns F(5), G(6), H(7)
+                // Groom: row 3 (index 2), columns I(8), J(9), K(10)
+                const brideRow = rows[2];
+                const groomRow = rows[2];
+
+                // Location: L2 (index 1, col 11), Date: M2 (index 1, col 12), Time: M3 (index 2, col 12)
+                const location = String(rows[1][11] || '').trim();
+                const date = String(rows[1][12] || '').trim();
+                const time = String(rows[2][12] || '').trim();
+
+                // Guests: rows 3+ (index 2+), columns A(0)=title, B(1)=first_name, C(2)=last_name, D(3)=position, E(4)=ready
+                const guests = [];
+                for (let i = 2; i < rows.length; i++) {
+                    const r = rows[i];
+                    const title = String(r[0] || '').trim();
+                    if (!title) continue; // skip empty rows
+                    guests.push({
+                        title: title,
+                        first_name: String(r[1] || '').trim(),
+                        last_name: String(r[2] || '').trim(),
+                        position: String(r[3] || '').trim(),
+                        ready: String(r[4] || '').trim()
+                    });
+                }
+
+                if (guests.length === 0) return false;
+
+                weddingData = {
+                    bride: {
+                        title: String(brideRow[5] || '').trim(),
+                        first_name: String(brideRow[6] || '').trim(),
+                        last_name: String(brideRow[7] || '').trim()
+                    },
+                    groom: {
+                        title: String(groomRow[8] || '').trim(),
+                        first_name: String(groomRow[9] || '').trim(),
+                        last_name: String(groomRow[10] || '').trim()
+                    },
+                    location: location,
+                    date: date,
+                    time: time,
+                    guests: guests
+                };
+
+                console.log(`Loaded ${guests.length} guests from wedding-invitation-card.xlsx`);
+                return true;
+            } catch (error) {
+                console.error('Error reading Excel file:', error);
+                return false;
+            }
+        }
+
+        // ===== Populate guest dropdown (hidden select keeps state) =====
+        function populateGuestSelect() {
+            const select = document.getElementById('guestSelect');
+            select.innerHTML = '<option value="">— ເລືອກແຂກເພື່ອສະແດງບັດ —</option>';
+            weddingData.guests.forEach((guest, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                const name = [guest.title, guest.first_name, guest.last_name].filter(Boolean).join(' ');
+                option.textContent = name;
+                select.appendChild(option);
+            });
+            renderGuestSearchDropdown();
+        }
+
+        // ===== Searchable guest selector =====
+        let searchActiveIndex = -1;
+
+        function guestFullName(index) {
+            const guest = weddingData.guests[index];
+            if (!guest) return '';
+            return [guest.title, guest.first_name, guest.last_name].filter(Boolean).join(' ');
+        }
+
+        // Render dropdown items: only guests NOT yet printed, filtered by search text
+        function renderGuestSearchDropdown() {
+            const input = document.getElementById('guestSearchInput');
+            const dropdown = document.getElementById('guestSearchDropdown');
+            const query = input.value.trim().toLowerCase();
+
+            const matches = [];
+            weddingData.guests.forEach((guest, index) => {
+                if (isPrinted(index)) return; // hide printed guests
+                const name = guestFullName(index);
+                if (!query || name.toLowerCase().includes(query)) {
+                    matches.push({ index, name });
+                }
+            });
+
+            dropdown.innerHTML = '';
+            if (matches.length === 0) {
+                const empty = document.createElement('div');
+                empty.className = 'guest-search-empty';
+                empty.textContent = query
+                    ? 'ບໍ່ພົບແຂກທີ່ກົງກັບການຄົ້ນຫາ'
+                    : 'ບໍ່ມີແຂກທີ່ຍັງບໍ່ທັນພິມ';
+                dropdown.appendChild(empty);
+                return;
+            }
+
+            matches.forEach((m) => {
+                const item = document.createElement('div');
+                item.className = 'guest-search-item';
+                item.textContent = m.name;
+                item.dataset.index = m.index;
+                item.addEventListener('mousedown', (e) => {
+                    e.preventDefault(); // keep focus so blur doesn't close first
+                    selectGuest(m.index);
+                });
+                dropdown.appendChild(item);
+            });
+        }
+
+        function openGuestDropdown() {
+            const dropdown = document.getElementById('guestSearchDropdown');
+            dropdown.hidden = false;
+            searchActiveIndex = -1;
+            updateSearchActive();
+        }
+
+        function closeGuestDropdown() {
+            const dropdown = document.getElementById('guestSearchDropdown');
+            dropdown.hidden = true;
+            searchActiveIndex = -1;
+        }
+
+        function updateSearchActive() {
+            const items = document.querySelectorAll('.guest-search-item');
+            items.forEach((el, i) => {
+                el.classList.toggle('active', i === searchActiveIndex);
+                if (i === searchActiveIndex) el.scrollIntoView({ block: 'nearest' });
+            });
+        }
+
+        function selectGuest(index) {
+            const select = document.getElementById('guestSelect');
+            select.value = index;
+            document.getElementById('guestSearchInput').value = guestFullName(index);
+            closeGuestDropdown();
+            updateCard();
+            updateQueryParams();
+        }
+
+        function clearGuestSelection() {
+            const select = document.getElementById('guestSelect');
+            select.value = '';
+            document.getElementById('guestSearchInput').value = '';
+            closeGuestDropdown();
+            updateCard();
+            updateQueryParams();
+        }
+
+        // Reflect the selected guest (from URL param) into the search input
+        function syncGuestSearchInput() {
+            const select = document.getElementById('guestSelect');
+            const input = document.getElementById('guestSearchInput');
+            input.value = select.value !== '' ? guestFullName(parseInt(select.value)) : '';
+        }
+
+        // ===== Paper size (A4 / A7 Traditional-Classic) =====
+        function setPaperSize(size) {
+            document.body.classList.toggle('paper-a7', size === 'a7');
+            document.getElementById('paperSelect').value = size;
+            localStorage.setItem('weddingPaperSize', size);
+            updatePaperInfo();
+            updateQueryParams();
+        }
+
+        function updatePaperInfo() {
+            const isA7 = document.body.classList.contains('paper-a7');
+            document.getElementById('paperSizeValue').textContent = isA7
+                ? 'A7 (12.7 × 17.8 ຊມ / 5 × 7 ນິ້ວ)'
+                : 'A4 (210 × 297 ມມ)';
+            document.getElementById('paperSizeNote').innerHTML = isA7
+                ? '💡 <strong>ຄຳແນະນຳ:</strong> ບັດຂະໜາດ 12.7×17.8 ຊມ (5×7 ນິ້ວ) ເປັນຂະໜາດບັດເຊີນຄລາສສິກ. ເມື່ອພິມ, ກະລຸນາຕັ້ງຄ່າເຈ້ຍເປັນ 12.7×17.8 ຊມ (5×7 ນິ້ວ) ແລະ ຂອບໜ້າເຈ້ຍ (margin) 0 ມມ ເພື່ອໃຫ້ໄດ້ບັດຂະໜາດເຕັມ.'
+                : '💡 <strong>ຄຳແນະນຳ:</strong> ບັດເຊີນຖືກອອກແບບສຳລັບພິມໃສ່ເຈ້ຍ A4 ແນວຕັ້ງ. ເມື່ອພິມ, ກະລຸນາຕັ້ງຄ່າເຈ້ຍເປັນ A4 ແລະ ກຳນົດຂອບໜ້າເຈ້ຍ (margin) ປະມານ 12 ມມ ເພື່ອໃຫ້ໄດ້ຜົນງານທີ່ສວຍງາມທີ່ສຸດ. ຖ້າຕ້ອງການຂະໜາດນ້ອຍກວ່າ (ເຊັ່ນ A5), ສາມາດຕັ້ງຄ່າການພິມໃຫ້ຫຼຸດຂະໜາດລົງ 50% ໄດ້.';
+        }
+
+        // ===== Print status storage (localStorage) =====
+        function getPrintStatuses() {
+            try {
+                return JSON.parse(localStorage.getItem('weddingPrintStatus')) || {};
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function isPrinted(index) {
+            return !!getPrintStatuses()[index];
+        }
+
+        function togglePrintStatus(index) {
+            const statuses = getPrintStatuses();
+            statuses[index] = !statuses[index];
+            localStorage.setItem('weddingPrintStatus', JSON.stringify(statuses));
+
+            // Printed guests disappear from the searchable selector
+            renderGuestSearchDropdown();
+
+            // If print-status filter is active, re-apply filters (guest may drop out)
+            if (document.getElementById('filterPrinted').value) {
+                applyFilters();
+            } else {
+                renderGuestTable();
+                updateQueryParams();
+            }
+        }
+
+        // ===== Render guest table (current page only) =====
+        function renderGuestTable() {
+            const tbody = document.getElementById('guestTableBody');
+            tbody.innerHTML = '';
+
+            const start = pageSize === 0 ? 0 : (currentPage - 1) * pageSize;
+            const end = pageSize === 0 ? filteredGuestIndices.length : Math.min(start + pageSize, filteredGuestIndices.length);
+            const pageIndices = filteredGuestIndices.slice(start, end);
+
+            pageIndices.forEach(index => {
+                const guest = weddingData.guests[index];
+                const tr = document.createElement('tr');
+                tr.dataset.index = index;
+                const printed = isPrinted(index);
+                tr.innerHTML = `
+                    <td class="num">${index + 1}</td>
+                    <td>${guest.title || ''}</td>
+                    <td>${guest.first_name || ''}</td>
+                    <td>${guest.last_name || ''}</td>
+                    <td>${guest.position || ''}</td>
+                    <td>${guest.ready || ''}</td>
+                    <td>
+                        <button class="print-status-btn ${printed ? 'printed' : 'not-printed'}"
+                                onclick="togglePrintStatus(${index})"
+                                title="ກົດເພື່ອປ່ຽນສະຖານະການພິມ">
+                            ${printed ? '✅ ພິມແລ້ວ' : '⬜ ຍັງບໍ່ທັນ'}
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            renderPagination();
+        }
+
+        // ===== Render pagination controls =====
+        function renderPagination() {
+            const total = filteredGuestIndices.length;
+            const totalPages = pageSize === 0 ? 1 : Math.max(1, Math.ceil(total / pageSize));
+
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            const pageInfo = document.getElementById('pageInfo');
+            const pageNumbers = document.getElementById('pageNumbers');
+            const prevBtn = document.getElementById('prevPageBtn');
+            const nextBtn = document.getElementById('nextPageBtn');
+
+            const start = total === 0 ? 0 : (pageSize === 0 ? 1 : (currentPage - 1) * pageSize + 1);
+            const end = total === 0 ? 0 : (pageSize === 0 ? total : Math.min(currentPage * pageSize, total));
+            pageInfo.textContent = `ໜ້າ ${currentPage}/${totalPages} · ສະແດງ ${start}-${end} ຈາກ ${total}`;
+
+            prevBtn.disabled = currentPage <= 1;
+            nextBtn.disabled = currentPage >= totalPages;
+
+            pageNumbers.innerHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'page-btn' + (i === currentPage ? ' active' : '');
+                btn.textContent = i;
+                btn.onclick = () => goToPage(i);
+                pageNumbers.appendChild(btn);
+            }
+        }
+
+        // ===== Pagination navigation =====
+        function goToPage(page) {
+            const totalPages = pageSize === 0 ? 1 : Math.max(1, Math.ceil(filteredGuestIndices.length / pageSize));
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            renderGuestTable();
+            updateQueryParams();
+        }
+
+        function changePage(delta) {
+            goToPage(currentPage + delta);
+        }
+
+        // ===== Populate filter dropdowns =====
+        function populateFilterOptions() {
+            const positionSelect = document.getElementById('filterPosition');
+            const readySelect = document.getElementById('filterReady');
+
+            // Collect unique positions and ready statuses
+            const positions = new Set();
+            const readyStatuses = new Set();
+            weddingData.guests.forEach(guest => {
+                if (guest.position) positions.add(guest.position);
+                if (guest.ready) readyStatuses.add(guest.ready);
+            });
+
+            // Populate position filter
+            positionSelect.innerHTML = '<option value="">ຕຳແໜ່ງທັງໝົດ</option>';
+            [...positions].sort().forEach(pos => {
+                const option = document.createElement('option');
+                option.value = pos;
+                option.textContent = pos;
+                positionSelect.appendChild(option);
+            });
+
+            // Populate ready status filter
+            readySelect.innerHTML = '<option value="">ສະຖານະທັງໝົດ</option>';
+            [...readyStatuses].sort().forEach(status => {
+                const option = document.createElement('option');
+                option.value = status;
+                option.textContent = status;
+                readySelect.appendChild(option);
+            });
+        }
+
+        // ===== Apply filters to guest table =====
+        function applyFilters() {
+            const searchText = document.getElementById('filterSearch').value.trim().toLowerCase();
+            const positionFilter = document.getElementById('filterPosition').value;
+            const readyFilter = document.getElementById('filterReady').value;
+            const printedFilter = document.getElementById('filterPrinted').value;
+
+            filteredGuestIndices = [];
+            weddingData.guests.forEach((guest, index) => {
+                const fullName = [guest.title, guest.first_name, guest.last_name].filter(Boolean).join(' ').toLowerCase();
+                const matchesSearch = !searchText || fullName.includes(searchText);
+                const matchesPosition = !positionFilter || guest.position === positionFilter;
+                const matchesReady = !readyFilter || guest.ready === readyFilter;
+                const matchesPrinted = !printedFilter ||
+                    (printedFilter === 'printed' && isPrinted(index)) ||
+                    (printedFilter === 'not-printed' && !isPrinted(index));
+
+                if (matchesSearch && matchesPosition && matchesReady && matchesPrinted) {
+                    filteredGuestIndices.push(index);
+                }
+            });
+
+            // Clamp current page to valid range
+            const totalPages = pageSize === 0 ? 1 : Math.max(1, Math.ceil(filteredGuestIndices.length / pageSize));
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            document.getElementById('guestCount').textContent =
+                `ພົບແຂກ ${filteredGuestIndices.length} ຄົນ ຈາກທັງໝົດ ${weddingData.guests.length} ຄົນ`;
+
+            renderGuestTable();
+            updateQueryParams();
+        }
+
+        // ===== Clear all filters =====
+        function clearFilters() {
+            document.getElementById('filterSearch').value = '';
+            document.getElementById('filterPosition').value = '';
+            document.getElementById('filterReady').value = '';
+            document.getElementById('filterPrinted').value = '';
+            currentPage = 1;
+            applyFilters();
+        }
+
+        // ===== Update URL query params =====
+        function updateQueryParams() {
+            const params = new URLSearchParams();
+
+            const searchText = document.getElementById('filterSearch').value.trim();
+            const positionFilter = document.getElementById('filterPosition').value;
+            const readyFilter = document.getElementById('filterReady').value;
+            const printedFilter = document.getElementById('filterPrinted').value;
+            const guestIndex = document.getElementById('guestSelect').value;
+
+            if (searchText) params.set('search', searchText);
+            if (positionFilter) params.set('position', positionFilter);
+            if (readyFilter) params.set('ready', readyFilter);
+            if (printedFilter) params.set('printed', printedFilter);
+            if (guestIndex !== '') params.set('guest', guestIndex);
+            if (document.body.classList.contains('paper-a7')) params.set('paper', 'a7');
+            if (pageSize !== 5) params.set('limit', pageSize);
+            if (currentPage > 1) params.set('page', currentPage);
+
+            const queryString = params.toString();
+            const newUrl = queryString
+                ? `${window.location.pathname}?${queryString}`
+                : window.location.pathname;
+
+            history.replaceState(null, '', newUrl);
+        }
+
+        // ===== Read query params on load =====
+        function applyQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+
+            // Guest selection
+            const guestParam = params.get('guest');
+            if (guestParam !== null && weddingData.guests[parseInt(guestParam)]) {
+                document.getElementById('guestSelect').value = guestParam;
+            }
+            syncGuestSearchInput();
+
+            // Paper size
+            const paperParam = params.get('paper');
+            if (paperParam === 'a7') {
+                setPaperSize('a7');
+            }
+
+            // Search text
+            const searchParam = params.get('search');
+            if (searchParam !== null) {
+                document.getElementById('filterSearch').value = searchParam;
+            }
+
+            // Position filter
+            const positionParam = params.get('position');
+            if (positionParam !== null) {
+                document.getElementById('filterPosition').value = positionParam;
+            }
+
+            // Ready filter
+            const readyParam = params.get('ready');
+            if (readyParam !== null) {
+                document.getElementById('filterReady').value = readyParam;
+            }
+
+            // Printed filter
+            const printedParam = params.get('printed');
+            if (printedParam !== null && ['printed', 'not-printed'].includes(printedParam)) {
+                document.getElementById('filterPrinted').value = printedParam;
+            }
+
+            // Limit (page size)
+            const limitParam = params.get('limit');
+            if (limitParam !== null && ['5', '10', '20', '0'].includes(limitParam)) {
+                pageSize = parseInt(limitParam);
+                document.getElementById('limitSelect').value = limitParam;
+            }
+
+            // Page number
+            const pageParam = params.get('page');
+            if (pageParam !== null && parseInt(pageParam) > 0) {
+                currentPage = parseInt(pageParam);
+            }
+        }
+
+        // ===== Update card with selected guest =====
+        function updateCard() {
+            const select = document.getElementById('guestSelect');
+            const index = select.value;
+
+            // Set couple names
+            document.getElementById('brideTitle').textContent = weddingData.bride.title || '';
+            document.getElementById('brideName').textContent = [weddingData.bride.first_name, weddingData.bride.last_name].filter(Boolean).join(' ');
+            document.getElementById('groomTitle').textContent = weddingData.groom.title || '';
+            document.getElementById('groomName').textContent = [weddingData.groom.first_name, weddingData.groom.last_name].filter(Boolean).join(' ');
+
+            // Set date, time, and location
+            document.getElementById('weddingDate').textContent = weddingData.date || '—';
+            document.getElementById('weddingTime').textContent = weddingData.time || '';
+            document.getElementById('venueName').textContent = weddingData.location || '—';
+
+            // Set content page info
+            document.getElementById('contentVenue').textContent = weddingData.location || '—';
+            document.getElementById('contentDate').textContent = weddingData.date || '—';
+            document.getElementById('contentTime').textContent = weddingData.time || '';
+
+            // Set signature
+            const brideName = [weddingData.bride.first_name, weddingData.bride.last_name].filter(Boolean).join(' ');
+            const groomName = [weddingData.groom.first_name, weddingData.groom.last_name].filter(Boolean).join(' ');
+            document.getElementById('signatureNames').textContent = `${brideName} & ${groomName}`;
+
+            if (index === '') {
+                document.getElementById('guestName').textContent = '—';
+                document.getElementById('guestPosition').textContent = '';
+                return;
+            }
+
+            const guest = weddingData.guests[parseInt(index)];
+            const fullName = [guest.title, guest.first_name, guest.last_name].filter(Boolean).join(' ');
+            document.getElementById('guestName').textContent = fullName;
+            document.getElementById('guestPosition').textContent = guest.position || '';
+        }
+
+        // ===== Print specific page =====
+        function printPage(page) {
+            // Remove any existing print classes
+            document.body.classList.remove('print-page1', 'print-page2');
+
+            if (page === 'page1') {
+                document.body.classList.add('print-page1');
+            } else if (page === 'page2') {
+                document.body.classList.add('print-page2');
+            }
+            // 'all' - no class added, prints both pages
+
+            // Wait a moment for the class to take effect, then print
+            setTimeout(() => {
+                window.print();
+                // Clean up after print dialog closes
+                setTimeout(() => {
+                    document.body.classList.remove('print-page1', 'print-page2');
+                }, 100);
+            }, 100);
+        }
+
+        // ===== Event listeners =====
+        document.getElementById('guestSelect').addEventListener('change', () => {
+            updateCard();
+            updateQueryParams();
+        });
+
+        // Searchable guest selector events
+        const guestSearchInput = document.getElementById('guestSearchInput');
+        guestSearchInput.addEventListener('focus', () => {
+            renderGuestSearchDropdown();
+            openGuestDropdown();
+        });
+
+        guestSearchInput.addEventListener('input', () => {
+            renderGuestSearchDropdown();
+            openGuestDropdown();
+            // If typed text no longer matches the selected guest, clear the selection
+            const select = document.getElementById('guestSelect');
+            if (select.value !== '') {
+                const name = guestFullName(parseInt(select.value));
+                if (guestSearchInput.value.trim().toLowerCase() !== name.toLowerCase()) {
+                    select.value = '';
+                    updateCard();
+                    updateQueryParams();
+                }
+            }
+        });
+
+        guestSearchInput.addEventListener('blur', () => {
+            setTimeout(closeGuestDropdown, 150);
+        });
+
+        guestSearchInput.addEventListener('keydown', (e) => {
+            const dropdown = document.getElementById('guestSearchDropdown');
+            const items = dropdown.querySelectorAll('.guest-search-item');
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (dropdown.hidden) {
+                    renderGuestSearchDropdown();
+                    openGuestDropdown();
+                }
+                searchActiveIndex = Math.min(searchActiveIndex + 1, items.length - 1);
+                updateSearchActive();
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                searchActiveIndex = Math.max(searchActiveIndex - 1, 0);
+                updateSearchActive();
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (!dropdown.hidden && searchActiveIndex >= 0 && items[searchActiveIndex]) {
+                    selectGuest(parseInt(items[searchActiveIndex].dataset.index));
+                }
+            } else if (e.key === 'Escape') {
+                closeGuestDropdown();
+            }
+        });
+
+        document.getElementById('filterSearch').addEventListener('input', () => { currentPage = 1; applyFilters(); });
+        document.getElementById('filterPosition').addEventListener('change', () => { currentPage = 1; applyFilters(); });
+        document.getElementById('filterReady').addEventListener('change', () => { currentPage = 1; applyFilters(); });
+        document.getElementById('filterPrinted').addEventListener('change', () => { currentPage = 1; applyFilters(); });
+
+        document.getElementById('limitSelect').addEventListener('change', () => {
+            pageSize = parseInt(document.getElementById('limitSelect').value);
+            currentPage = 1;
+            applyFilters();
+        });
+
+        // ===== Initialize =====
+        // Restore saved paper size preference
+        const savedPaper = localStorage.getItem('weddingPaperSize');
+        if (savedPaper === 'a7') {
+            setPaperSize('a7');
+        }
+        loadData();
+    </script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+# iPolloWork / opencode tooling (not part of the project)
+.opencode/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Editor
+.vscode/
+.idea/

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>A7 + 3-Column Layout Test</title></head>
+<body style="font-family:monospace;font-size:13px;">
+<iframe id="f" src="index.html?paper=a7&v=3" style="width:1400px;height:1400px;border:1px solid #ccc;display:block;"></iframe>
+<pre id="out">loading...</pre>
+<script>
+const f = document.getElementById('f');
+f.onload = () => {
+    setTimeout(() => {
+        const doc = f.contentDocument;
+        const lines = [];
+        const body = doc.body;
+        lines.push('body display: ' + getComputedStyle(body).display);
+        lines.push('grid areas: ' + getComputedStyle(body).gridTemplateAreas);
+        lines.push('grid cols: ' + getComputedStyle(body).gridTemplateColumns);
+        const frames = doc.querySelectorAll('.card-frame');
+        frames.forEach((el, i) => {
+            const cs = getComputedStyle(el);
+            const content = el.querySelector('.card-content');
+            lines.push('frame' + (i+1) + ': ' + el.offsetWidth + 'x' + el.offsetHeight +
+                ' scrollH=' + el.scrollHeight + ' clientH=' + el.clientHeight +
+                ' contentH=' + content.offsetHeight +
+                ' overflow=' + (el.scrollHeight > el.clientHeight ? 'YES' : 'no'));
+        });
+        const card = doc.querySelector('.invitation-card');
+        lines.push('invitation-card: ' + card.offsetWidth + 'x' + card.offsetHeight);
+        const gn = doc.querySelector('.guest-name');
+        lines.push('guest-name font: ' + getComputedStyle(gn).fontSize);
+        const it = doc.querySelector('.invite-text');
+        lines.push('invite-text font: ' + getComputedStyle(it).fontSize + ' lines=' + Math.round(it.getBoundingClientRect().height / parseFloat(getComputedStyle(it).lineHeight)));
+        const row = doc.querySelector('.content-sections-row');
+        lines.push('sections-row display: ' + getComputedStyle(row).display);
+        const mb = doc.querySelector('.message-box');
+        lines.push('message-box h: ' + mb.offsetHeight);
+        const sig = doc.querySelector('.signature');
+        lines.push('signature h: ' + sig.offsetHeight);
+        const cardContainer = doc.querySelector('.card-container');
+        const infoSection = doc.querySelector('.size-info-section');
+        const guestSection = doc.querySelector('.guest-list-section');
+        lines.push('card-container x: ' + cardContainer.getBoundingClientRect().left + ' w=' + cardContainer.offsetWidth);
+        lines.push('size-info x: ' + infoSection.getBoundingClientRect().left + ' w=' + infoSection.offsetWidth);
+        lines.push('guest-list x: ' + guestSection.getBoundingClientRect().left + ' w=' + guestSection.offsetWidth);
+        document.getElementById('out').textContent = lines.join('\n');
+    }, 1500);
+};
+</script>
+</body>
+</html>

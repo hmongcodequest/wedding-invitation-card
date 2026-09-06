@@ -1,0 +1,66 @@
+{
+  "bride": {
+    "title": "ນາງ",
+    "first_name": "ວີ",
+    "last_name": "ເຮີ"
+  },
+  "groom": {
+    "title": "ທ້າວ",
+    "first_name": "ກົ່ງ",
+    "last_name": "ກື້"
+  },
+  "location": "ບ້ານ ພູວຽງນ້ອຍ, ເມືອງ ພູຄູນ, ແຂວງ ຫຼວງພະບາງ",
+  "date": "ວັນທີ່ 14 ເດື່ອນ 9 ປີ 2026",
+  "time": "ເວລາ 11:30 ນາທີ ຕອນທ່ຽງ",
+  "guests": [
+    {
+      "title": "ທ່ານ",
+      "first_name": "ຄຳສຸດ",
+      "last_name": "ພັນທະນາ",
+      "position": "ດຣ.",
+      "ready": "ຄອບຄົວ"
+    },
+    {
+      "title": "ທ່ານ ນາງ",
+      "first_name": "ສຸສະພັນ",
+      "last_name": "ມົງມະນີ",
+      "position": "ບໍລິຫານ",
+      "ready": "ຄອບຄົວ"
+    },
+    {
+      "title": "ທ່ານ",
+      "first_name": "ກະລີ",
+      "last_name": "ສຸພັນນີ",
+      "position": "ດຣ.",
+      "ready": "ຄອບຄົວ"
+    },
+    {
+      "title": "ທ່ານ",
+      "first_name": "ມາລິ",
+      "last_name": "ຄຳທະວົງ",
+      "position": "ຜົວ-ເມຍ",
+      "ready": "ພັນລະຍາ"
+    },
+    {
+      "title": "ທ່ານ",
+      "first_name": "ລີສະນາ",
+      "last_name": "ມາວີໄວ",
+      "position": "ຄອບຄົວ",
+      "ready": "ຄອບຄົວ"
+    },
+    {
+      "title": "ທ່ານ ນາງ",
+      "first_name": "ເພດ",
+      "last_name": "ວິໄລພອນ",
+      "position": "ຄອບຄົວ",
+      "ready": "ສາມີ"
+    },
+    {
+      "title": "ທ່ານ",
+      "first_name": "ເອມີ",
+      "last_name": "ຄຳຄວນ",
+      "position": "ຄອບຄົວ",
+      "ready": "ຄອບຄົວ"
+    }
+  ]
+}
