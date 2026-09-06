@@ -1,0 +1,1334 @@
+/* ===== Reset & Base ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --gold: #c9a227;
+  --gold-light: #e8d48b;
+  --gold-dark: #a8841f;
+  --cream: #fdf8ef;
+  --cream-dark: #f5ecdc;
+  --ink: #3d3a34;
+  --ink-light: #6b655a;
+  --rose: #b76e79;
+  --rose-light: #e8c4c9;
+  --white: #ffffff;
+}
+
+body {
+  font-family: var(--font-noto-lao), sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+/* ===== Toolbar (screen only) ===== */
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(253, 248, 239, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--gold-light);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.toolbar-title {
+  font-family: var(--font-playfair), var(--font-noto-lao), serif;
+  font-size: 1.1rem;
+  color: var(--gold-dark);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  font-family: var(--font-noto-lao), sans-serif;
+  font-size: 0.9rem;
+  padding: 8px 18px;
+  border-radius: 6px;
+  border: 1px solid var(--gold);
+  background: var(--white);
+  color: var(--gold-dark);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.btn:hover {
+  background: var(--gold);
+  color: var(--white);
+}
+
+.btn-primary {
+  background: var(--gold);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  background: var(--gold-dark);
+  border-color: var(--gold-dark);
+}
+
+.guest-select {
+  font-family: var(--font-noto-lao), sans-serif;
+  font-size: 0.9rem;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--gold-light);
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+  min-width: 220px;
+}
+
+/* ===== Searchable guest selector ===== */
+.guest-search {
+  position: relative;
+  min-width: 280px;
+}
+
+.guest-search-input {
+  font-family: var(--font-noto-lao), sans-serif;
+  font-size: 0.9rem;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--gold-light);
+  background: var(--white);
+  color: var(--ink);
+  width: 100%;
+  box-sizing: border-box;
+  cursor: text;
+}
+
+.guest-search-input:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.25);
+}
+
+.guest-search-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: var(--white);
+  border: 1px solid var(--gold-light);
+  border-radius: 6px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  max-height: 280px;
+  overflow-y: auto;
+  z-index: 200;
+}
+
+.guest-search-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-family: var(--font-noto-lao), sans-serif;
+  font-size: 0.9rem;
+  color: var(--ink);
+  border-bottom: 1px solid #f5efe2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.guest-search-item:last-child {
+  border-bottom: none;
+}
+
+.guest-search-item:hover,
+.guest-search-item.active {
+  background: var(--gold-light);
+  color: var(--gold-dark);
+}
+
+.guest-search-empty {
+  padding: 10px 12px;
+  color: #999;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* ===== Paper size selector ===== */
+.paper-select {
+  font-family: var(--font-noto-lao), sans-serif;
+  font-size: 0.9rem;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--gold-light);
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+  outline: none;
+}
+
+.paper-select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+}
+
+/* ===== A7 Traditional/Classic paper ===== */
+/* A7 = 12.7 × 17.8 cm (5×7 in). Dedicated compact layout with readable typography. */
+.paper-a7 .invitation-card {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.paper-a7 .card-frame {
+  width: 480px;
+  min-height: 673px;
+  margin: 0 auto;
+  padding: 17px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+}
+
+.paper-a7 .content-page {
+  margin-top: 40px;
+  border-top: none;
+  padding-top: 0;
+}
+
+.paper-a7 .card-content {
+  width: 100%;
+  line-height: 1.4;
+}
+
+/* A7 corner ornaments */
+.paper-a7 .corner {
+  width: 27px;
+  height: 27px;
+  border-width: 2.5px;
+}
+.paper-a7 .corner-tl { top: 8px; left: 8px; }
+.paper-a7 .corner-tr { top: 8px; right: 8px; }
+.paper-a7 .corner-bl { bottom: 8px; left: 8px; }
+.paper-a7 .corner-br { bottom: 8px; right: 8px; }
+
+/* A7 page 1 typography — balanced for 12.7×17.8 cm (5×7 in) card */
+.paper-a7 .ornament-top {
+  font-size: 1.3rem;
+  letter-spacing: 8px;
+  margin-bottom: 0;
+}
+
+.paper-a7 .invite-label {
+  font-size: 1rem;
+  letter-spacing: 3px;
+  margin-bottom: 0;
+}
+
+.paper-a7 .guest-name {
+  font-size: 2.05rem;
+  margin: 3px 0 3px;
+  line-height: 1.2;
+}
+
+.paper-a7 .guest-position {
+  font-size: 1.15rem;
+  margin-bottom: 3px;
+}
+
+.paper-a7 .divider {
+  margin: 8px 0;
+  gap: 14px;
+}
+
+.paper-a7 .divider-line {
+  width: 68px;
+}
+
+.paper-a7 .divider-icon {
+  font-size: 1.3rem;
+}
+
+.paper-a7 .invite-text {
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 7px;
+  max-width: 408px;
+}
+
+.paper-a7 .couple-names {
+  margin: 7px 0;
+}
+
+.paper-a7 .couple-row {
+  gap: 20px;
+}
+
+.paper-a7 .person-title {
+  font-size: 0.95rem;
+  letter-spacing: 2px;
+}
+
+.paper-a7 .person-name {
+  font-size: 1.65rem;
+  margin-top: 3px;
+}
+
+.paper-a7 .ampersand {
+  font-size: 2.2rem;
+}
+
+.paper-a7 .heart-photo-wrap {
+  width: 68px;
+  height: 61px;
+  margin: 7px auto;
+}
+
+.paper-a7 .heart-photo-wrap::before {
+  inset: -5px;
+}
+
+.paper-a7 .wedding-date {
+  margin: 7px 0;
+  padding: 7px 20px;
+}
+
+.paper-a7 .date-label {
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+}
+
+.paper-a7 .date-value {
+  font-size: 1.55rem;
+  margin-top: 3px;
+}
+
+.paper-a7 .time-value {
+  font-size: 1.05rem;
+  margin-top: 3px;
+}
+
+.paper-a7 .venue {
+  margin-top: 7px;
+  font-size: 1.05rem;
+}
+
+.paper-a7 .venue-label {
+  font-size: 0.9rem;
+}
+
+.paper-a7 .venue-name {
+  margin-top: 3px;
+}
+
+.paper-a7 .closing {
+  margin-top: 3px;
+}
+
+.paper-a7 .ornament-bottom {
+  font-size: 1.3rem;
+  letter-spacing: 7px;
+  margin-top: 7px;
+}
+
+/* A7 page 2 typography — balanced for 12.7×17.8 cm (5×7 in) card */
+.paper-a7 .content-title {
+  font-size: 1.75rem;
+  margin-bottom: 0;
+}
+
+.paper-a7 .content-subtitle {
+  font-size: 1rem;
+  margin-bottom: 3px;
+}
+
+.paper-a7 .content-section {
+  margin-bottom: 3px;
+}
+
+.paper-a7 .content-section-title {
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+  gap: 14px;
+}
+
+.paper-a7 .content-section-title::before,
+.paper-a7 .content-section-title::after {
+  width: 44px;
+}
+
+.paper-a7 .schedule-list {
+  max-width: 100%;
+}
+
+.paper-a7 .schedule-item {
+  gap: 17px;
+  padding: 0;
+}
+
+.paper-a7 .schedule-time {
+  font-size: 1.05rem;
+  min-width: 88px;
+}
+
+.paper-a7 .schedule-desc {
+  font-size: 1.05rem;
+}
+
+.paper-a7 .info-grid {
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  max-width: 100%;
+}
+
+.paper-a7 .info-card {
+  padding: 3px 10px;
+}
+
+.paper-a7 .info-icon {
+  font-size: 1.35rem;
+  margin-bottom: 2px;
+}
+
+.paper-a7 .info-label {
+  font-size: 0.85rem;
+  margin-bottom: 3px;
+}
+
+.paper-a7 .info-value {
+  font-size: 1rem;
+}
+
+/* Blessing message is too much content for a small A7 card */
+.paper-a7 .message-box {
+  display: none;
+}
+
+.paper-a7 .signature {
+  margin-top: 7px;
+}
+
+.paper-a7 .signature-name {
+  font-size: 1.45rem;
+}
+
+.paper-a7 .signature-role {
+  font-size: 0.9rem;
+  margin-top: 3px;
+}
+
+/* ===== Card Container ===== */
+.card-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* ===== Invitation Card ===== */
+.invitation-card {
+  background: var(--white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--gold-light);
+  position: relative;
+}
+
+/* Decorative border frame */
+.card-frame {
+  border: 3px double var(--gold);
+  border-radius: 8px;
+  margin: 14px;
+  padding: 30px 40px;
+  position: relative;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(201, 162, 39, 0.08), transparent 60%),
+    linear-gradient(180deg, var(--cream) 0%, var(--white) 30%, var(--white) 70%, var(--cream) 100%);
+}
+
+/* Corner ornaments */
+.corner {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-color: var(--gold);
+  border-style: solid;
+  opacity: 0.7;
+}
+.corner-tl { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+.corner-tr { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
+.corner-bl { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
+.corner-br { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+/* ===== Card Content ===== */
+.card-content {
+  text-align: center;
+  position: relative;
+}
+
+.ornament-top {
+  font-size: 1.6rem;
+  color: var(--gold);
+  letter-spacing: 8px;
+  margin-bottom: 6px;
+}
+
+.invite-label {
+  font-size: 0.95rem;
+  color: var(--ink-light);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.guest-name {
+  font-family: var(--font-playfair), var(--font-noto-lao), serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--gold-dark);
+  margin: 10px 0 4px;
+  line-height: 1.3;
+}
+
+.guest-position {
+  font-size: 1rem;
+  color: var(--rose);
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.divider-line {
+  height: 1px;
+  width: 80px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.divider-icon {
+  color: var(--gold);
+  font-size: 1.1rem;
+}
+
+.invite-text {
+  font-size: 1.05rem;
+  color: var(--ink);
+  max-width: 520px;
+  margin: 0 auto 20px;
+  line-height: 2;
+}
+
+.couple-names {
+  margin: 24px 0;
+}
+
+.couple-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.person {
+  text-align: center;
+}
+
+.person-title {
+  font-size: 0.9rem;
+  color: var(--ink-light);
+  letter-spacing: 2px;
+}
+
+.person-name {
+  font-family: var(--font-playfair), var(--font-noto-lao), serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-top: 4px;
+}
+
+.ampersand {
+  font-family: var(--font-playfair), var(--font-noto-lao), serif;
+  font-size: 2.5rem;
+  color: var(--gold);
+  font-style: italic;
+  line-height: 1;
+}
+
+/* ===== Heart-shaped photo ===== */
+.heart-photo-wrap {
+  margin: 24px auto;
+  position: relative;
+  width: 220px;
+  height: 200px;
+}
+
+/* Gold border heart (behind the photo heart) */
+.heart-photo-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+  clip-path: url(#heartClip);
+  filter: drop-shadow(0 4px 12px rgba(201, 162, 39, 0.35));
+}
+
+.heart-photo {
+  position: absolute;
+  inset: 0;
+  clip-path: url(#heartClip);
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--rose-light), var(--cream));
+}
+
+.heart-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.wedding-date {
+  margin: 20px 0;
+  padding: 16px 24px;
+  background: linear-gradient(135deg, var(--cream), var(--cream-dark));
+  border: 1px solid var(--gold-light);
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.date-label {
+  font-size: 0.85rem;
+  color: var(--ink-light);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.date-value {
+  font-family: var(--font-playfair), var(--font-noto-lao), serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--gold-dark);
+  margin-top: 4px;
+}
+
+.time-value {
+  font-family: var(--font-noto-lao), sans-serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--rose);
+  margin-top: 6px;
+}
+
+.venue {
+  margin-top: 16px;
+  font-size: 1rem;
+  color: var(--ink);
+}
+
+.venue-label {
+  color: var(--ink-light);
+  font-size: 0.9rem;
+}
+
+.venue-name {
+  font-weight: 600;
+  color: var(--rose);
+  margin-top: 4px;
+}
+
+.closing {
+  margin-top: 24px;
+  font-size: 0.95rem;
+  color: var(--ink-light);
+  font-style: italic;
+}
+
+.ornament-bottom {
+  font-size: 1.4rem;
+  color: var(--gold);
+  letter-spacing: 6px;
+  margin-top: 20px;
+}
+
+/* ===== Page 2: Content Page ===== */
+.content-page {
+  margin-top: 30px;
+  border-top: 2px solid var(--gold-light);
+  padding-top: 30px;
+}
+
+.content-title {
+  font-family: var(--font-playfair), var(--font-noto-lao), serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--gold-dark);
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.content-subtitle {
+  font-size: 1rem;
+  color: var(--ink-light);
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.content-section {
+  margin-bottom: 30px;
+}
+
+.content-section-title {
+  font-family: var(--font-playfair), var(--font-noto-lao), serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--gold-dark);
+  text-align: center;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.content-section-title::before,
+.content-section-title::after {
+  content: '';
+  height: 1px;
+  width: 50px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.schedule-list {
+  list-style: none;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.schedule-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--gold-light);
+}
+
+.schedule-item:last-child {
+  border-bottom: none;
+}
+
+.schedule-time {
+  font-weight: 600;
+  color: var(--rose);
+  min-width: 100px;
+  text-align: right;
+}
+
+.schedule-desc {
+  color: var(--ink);
+  text-align: left;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.info-card {
+  background: var(--cream);
+  border: 1px solid var(--gold-light);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.info-icon {
+  font-size: 1.6rem;
+  margin-bottom: 6px;
+}
+
+.info-label {
+  font-size: 0.85rem;
+  color: var(--ink-light);
+  margin-bottom: 4px;
+}
+
+.info-value {
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+
+.message-box {
+  background: linear-gradient(135deg, var(--cream), var(--cream-dark));
+  border: 1px solid var(--gold-light);
+  border-radius: 8px;
+  padding: 24px;
+  max-width: 560px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.message-box p {
+  font-size: 1rem;
+  color: var(--ink);
+  line-height: 2;
+  margin-bottom: 12px;
+}
+
+.message-box p:last-child {
+  margin-bottom: 0;
+}
+
+.signature {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.signature-name {
+  font-family: var(--font-playfair), var(--font-noto-lao), serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--gold-dark);
+}
+
+.signature-role {
+  font-size: 0.9rem;
+  color: var(--ink-light);
+  margin-top: 4px;
+}
+
+/* ===== Card Size Info (screen only) ===== */
+.size-info-section {
+  max-width: 900px;
+  margin: 30px auto 0;
+  padding: 0 20px;
+}
+
+.size-info-card {
+  background: var(--white);
+  border-radius: 12px;
+  border: 1px solid var(--gold-light);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  padding: 24px 30px;
+}
+
+.size-info-title {
+  font-family: var(--font-playfair), var(--font-noto-lao), serif;
+  font-size: 1.2rem;
+  color: var(--gold-dark);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.size-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.size-info-item {
+  background: var(--cream);
+  border: 1px solid var(--gold-light);
+  border-radius: 8px;
+  padding: 14px 16px;
+  text-align: center;
+}
+
+.size-info-label {
+  font-size: 0.85rem;
+  color: var(--ink-light);
+  margin-bottom: 4px;
+}
+
+.size-info-value {
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 1rem;
+}
+
+.size-info-note {
+  margin-top: 14px;
+  font-size: 0.9rem;
+  color: var(--ink-light);
+  line-height: 1.8;
+  border-top: 1px dashed var(--gold-light);
+  padding-top: 12px;
+}
+
+/* ===== Guest List Section (screen only) ===== */
+.guest-list-section {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.guest-list-card {
+  background: var(--white);
+  border-radius: 12px;
+  border: 1px solid var(--gold-light);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  padding: 30px;
+}
+
+.guest-list-title {
+  font-family: var(--font-playfair), var(--font-noto-lao), serif;
+  font-size: 1.4rem;
+  color: var(--gold-dark);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.guest-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.guest-table th {
+  background: var(--cream);
+  color: var(--gold-dark);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 2px solid var(--gold-light);
+}
+
+.guest-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--cream-dark);
+  font-size: 0.95rem;
+}
+
+.guest-table tr:hover td {
+  background: var(--cream);
+}
+
+.guest-table .num {
+  width: 40px;
+  color: var(--ink-light);
+}
+
+/* ===== Guest List Filters ===== */
+.guest-filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.guest-filters .filter-input,
+.guest-filters .filter-select {
+  font-family: var(--font-noto-lao), sans-serif;
+  font-size: 0.9rem;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--gold-light);
+  background: var(--white);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.guest-filters .filter-input:focus,
+.guest-filters .filter-select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+}
+
+.guest-filters .filter-input {
+  flex: 1;
+  min-width: 180px;
+}
+
+.guest-filters .filter-select {
+  min-width: 130px;
+  cursor: pointer;
+}
+
+.guest-filters .filter-clear {
+  font-family: var(--font-noto-lao), sans-serif;
+  font-size: 0.85rem;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--gold-light);
+  background: var(--cream);
+  color: var(--ink-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.guest-filters .filter-clear:hover {
+  background: var(--rose-light);
+  border-color: var(--rose);
+  color: var(--rose);
+}
+
+.guest-count {
+  font-size: 0.85rem;
+  color: var(--ink-light);
+  margin-bottom: 10px;
+}
+
+.guest-count strong {
+  color: var(--gold-dark);
+}
+
+.guest-table tr.hidden-row {
+  display: none;
+}
+
+/* ===== Print Status Button ===== */
+.print-status-btn {
+  font-family: var(--font-noto-lao), sans-serif;
+  font-size: 0.8rem;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.print-status-btn.printed {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-color: #a5d6a7;
+}
+
+.print-status-btn.printed:hover {
+  background: #c8e6c9;
+}
+
+.print-status-btn.not-printed {
+  background: #fafafa;
+  color: #757575;
+  border-color: #e0e0e0;
+}
+
+.print-status-btn.not-printed:hover {
+  background: #eeeeee;
+  border-color: #bdbdbd;
+}
+
+/* ===== Pagination ===== */
+.guest-table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.page-btn {
+  font-family: var(--font-noto-lao), sans-serif;
+  font-size: 0.85rem;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 6px;
+  border: 1px solid var(--gold-light);
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: var(--cream);
+  border-color: var(--gold);
+}
+
+.page-btn.active {
+  background: var(--gold);
+  color: var(--white);
+  border-color: var(--gold);
+  font-weight: 600;
+}
+
+.page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.page-info {
+  font-size: 0.85rem;
+  color: var(--ink-light);
+}
+
+.limit-select {
+  font-family: var(--font-noto-lao), sans-serif;
+  font-size: 0.85rem;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--gold-light);
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+  outline: none;
+}
+
+.limit-select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+}
+
+/* ===== Print Styles ===== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm;
+  }
+
+  /* A7 Traditional/Classic card page (12.7 × 17.8 cm / 5×7 in) */
+  @page a7page {
+    size: 127mm 178mm portrait;
+    margin: 0;
+  }
+
+  .paper-a7 .invitation-card {
+    page: a7page;
+  }
+
+  /* A7 card pages: exact sheet size, no shadow */
+  .paper-a7 .card-frame {
+    width: 127mm;
+    height: 178mm;
+    min-height: 178mm;
+    margin: 0;
+    padding: 4mm 6mm;
+    box-shadow: none;
+  }
+
+  .paper-a7 .content-page {
+    margin-top: 0;
+  }
+
+  body {
+    background: var(--white);
+  }
+
+  .toolbar,
+  .guest-list-section,
+  .size-info-section {
+    display: none !important;
+  }
+
+  .card-container {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .invitation-card {
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+  }
+
+  .card-frame {
+    border: 3px double var(--gold);
+    margin: 0;
+    padding: 20px 30px;
+    min-height: 250mm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Each card page starts on its own sheet */
+  #page1 {
+    page-break-after: always;
+  }
+
+  .card-content {
+    width: 100%;
+  }
+
+  .guest-name {
+    font-size: 2rem;
+  }
+
+  .person-name {
+    font-size: 1.6rem;
+  }
+
+  .date-value {
+    font-size: 1.4rem;
+  }
+
+  .time-value {
+    font-size: 1rem;
+  }
+
+  /* Page 2 print styles */
+  .content-page {
+    margin-top: 0;
+    border-top: none;
+    padding-top: 0;
+    min-height: 250mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Print only page 1 */
+  .print-page1 #page2 {
+    display: none !important;
+  }
+
+  /* Print only page 2 */
+  .print-page2 #page1 {
+    display: none !important;
+  }
+
+  .content-title {
+    font-size: 1.6rem;
+  }
+
+  .heart-photo-wrap {
+    width: 180px;
+    height: 165px;
+  }
+
+  .content-section-title {
+    font-size: 1.1rem;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Ensure colors print */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
+  .card-frame {
+    padding: 20px;
+    margin: 8px;
+  }
+
+  .guest-name {
+    font-size: 1.6rem;
+  }
+
+  .person-name {
+    font-size: 1.4rem;
+  }
+
+  .ampersand {
+    font-size: 2rem;
+  }
+
+  .date-value {
+    font-size: 1.3rem;
+  }
+
+  .heart-photo-wrap {
+    width: 170px;
+    height: 155px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .toolbar {
+    padding: 10px 16px;
+  }
+
+  .guest-search {
+    min-width: 100%;
+  }
+
+  .paper-select {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .toolbar-actions {
+    width: 100%;
+  }
+
+  .btn {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+/* ===== 2-Column Layout (wide screens) ===== */
+@media (min-width: 1280px) {
+  .app-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+    grid-template-areas:
+      "toolbar toolbar"
+      "card info";
+    align-items: start;
+    column-gap: 28px;
+    padding: 0 28px;
+  }
+
+  .toolbar {
+    grid-area: toolbar;
+  }
+
+  .card-container {
+    grid-area: card;
+    max-width: 100%;
+    margin: 40px 0 0;
+    padding: 0;
+    min-width: 0;
+  }
+
+  .size-info-section {
+    grid-area: info;
+    max-width: 100%;
+    margin: 40px 0 0;
+    padding: 0;
+    min-width: 0;
+  }
+}
