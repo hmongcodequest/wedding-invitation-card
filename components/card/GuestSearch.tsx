@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { Guest } from "@/lib/data";
+import { SearchIcon } from "@/components/icons";
 
 interface GuestSearchProps {
   guests: Guest[];
@@ -87,21 +88,35 @@ export default function GuestSearch({
 
   return (
     <div className="guest-search">
-      <input
-        type="text"
-        className="guest-search-input"
-        placeholder="🔍 ຄົ້ນຫາ ແລະ ເລືອກແຂກ..."
-        autoComplete="off"
-        aria-label="ຄົ້ນຫາ ແລະ ເລືອກແຂກ"
-        value={query}
-        onChange={(e) => handleInputChange(e.target.value)}
-        onFocus={() => {
-          setOpen(true);
-          setActiveIndex(-1);
-        }}
-        onBlur={() => setTimeout(() => setOpen(false), 150)}
-        onKeyDown={handleKeyDown}
-      />
+      <div style={{ position: "relative" }}>
+        <SearchIcon
+          size={16}
+          style={{
+            position: "absolute",
+            left: 12,
+            top: "50%",
+            transform: "translateY(-50%)",
+            color: "var(--ink-light)",
+            pointerEvents: "none",
+          }}
+        />
+        <input
+          type="text"
+          className="guest-search-input"
+          style={{ paddingLeft: 36 }}
+          placeholder="ຄົ້ນຫາ ແລະ ເລືອກແຂກ..."
+          autoComplete="off"
+          aria-label="ຄົ້ນຫາ ແລະ ເລືອກແຂກ"
+          value={query}
+          onChange={(e) => handleInputChange(e.target.value)}
+          onFocus={() => {
+            setOpen(true);
+            setActiveIndex(-1);
+          }}
+          onBlur={() => setTimeout(() => setOpen(false), 150)}
+          onKeyDown={handleKeyDown}
+        />
+      </div>
       {open && (
         <div className="guest-search-dropdown">
           {matches.length === 0 ? (

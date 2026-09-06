@@ -34,21 +34,29 @@ export function loadWeddingDataFromJson(): WeddingData | null {
   }
 }
 
-/** Insert wedding info + guests inside one transaction. Returns guest count. */
-export function insertWeddingData(data: WeddingData): number {
+export interface InsertResult {
+  weddingId: number;
+  guests: number;
+}
+
+/** Insert a wedding + its guests inside one transaction. */
+export function insertWeddingData(
+  data: WeddingData,
+  options?: { template?: string }
+): InsertResult {
   const insertWedding = db.prepare(
-    `INSERT INTO wedding (
-       id, bride_title, bride_first_name, bride_last_name,
+    `INSERT INTO weddings (
+       bride_title, bride_first_name, bride_last_name,
        groom_title, groom_first_name, groom_last_name,
-       location, date, time
-     ) VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+       location, date, time, template
+     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   );
   const insertGuest = db.prepare(
-    "INSERT INTO guests (title, first_name, last_name, position, ready) VALUES (?, ?, ?, ?, ?)"
+    "INSERT INTO guests (wedding_id, title, first_name, last_name, position, ready) VALUES (?, ?, ?, ?, ?, ?)"
   );
 
-  const tx = db.transaction(() => {
-    insertWedding.run(
+  const weddingId = db.transaction(() => {
+    const info = insertWedding.run(
       data.bride.title,
       data.bride.first_name,
       data.bride.last_name,
@@ -57,13 +65,15 @@ export function insertWeddingData(data: WeddingData): number {
       data.groom.last_name,
       data.location,
       data.date,
-      data.time
+      data.time,
+      options?.template ?? "classic-gold"
     );
+    const id = Number(info.lastInsertRowid);
     for (const g of data.guests) {
-      insertGuest.run(g.title, g.first_name, g.last_name, g.position, g.ready);
+      insertGuest.run(id, g.title, g.first_name, g.last_name, g.position, g.ready);
     }
-  });
-  tx();
+    return id;
+  })();
 
-  return data.guests.length;
+  return { weddingId, guests: data.guests.length };
 }

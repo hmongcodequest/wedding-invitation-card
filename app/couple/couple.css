@@ -1,0 +1,690 @@
+/* ============================================================
+   Couple Page — Public Photo Upload
+   Romantic pink + gold theme matching the wedding invitation
+   ============================================================ */
+
+.couple-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(1000px 400px at 100% 0%, rgba(219, 39, 119, 0.06), transparent 55%),
+    #fdf2f8;
+  color: #3d3a34;
+  font-family: var(--font-noto-lao), sans-serif;
+}
+
+/* ===== Loading ===== */
+.couple-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 16px;
+  color: var(--ap-ink-light);
+}
+
+.couple-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--ap-border);
+  border-top-color: var(--ap-primary);
+  border-radius: 50%;
+  animation: couple-spin 1s linear infinite;
+}
+
+.couple-spinner-small {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: couple-spin 0.8s linear infinite;
+}
+
+@keyframes couple-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===== Error State ===== */
+.couple-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 16px;
+  padding: 32px;
+  text-align: center;
+  color: var(--ap-ink-light);
+}
+
+.couple-error h2 {
+  color: var(--ap-primary);
+  margin: 0;
+}
+
+/* ===== Header ===== */
+.couple-header {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--ap-border);
+  padding: 24px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.couple-header-content {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.couple-header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--ap-primary-dark);
+  margin: 0 0 8px;
+}
+
+.couple-subtitle {
+  color: var(--ap-ink-light);
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* ===== Main ===== */
+.couple-main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 20px;
+}
+
+/* ===== Card ===== */
+.couple-card {
+  background: var(--ap-surface);
+  border: 1px solid var(--ap-border);
+  border-radius: 20px;
+  box-shadow: var(--ap-shadow-lg);
+  padding: 32px;
+}
+
+/* ===== Couple Info Section ===== */
+.couple-info-section {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--ap-border);
+}
+
+.couple-names {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.couple-person {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.couple-person.bride {
+  flex-direction: column;
+}
+
+.couple-person.groom {
+  flex-direction: column-reverse;
+}
+
+.couple-person-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ap-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.couple-person-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ap-ink);
+}
+
+.couple-amp {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--ap-primary);
+  line-height: 1;
+}
+
+.couple-wedding-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  color: var(--ap-ink-light);
+  font-size: 0.9rem;
+}
+
+.couple-info-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.couple-info-item svg {
+  color: var(--ap-primary);
+  flex-shrink: 0;
+}
+
+/* ===== Photos Section ===== */
+.couple-photos-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.couple-photo-upload {
+  background: var(--ap-primary-soft);
+  border: 1px solid var(--ap-border);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.couple-photo-upload h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ap-primary-dark);
+  margin: 0 0 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ap-border);
+}
+
+.couple-photo-upload h3 svg {
+  color: var(--ap-primary);
+  flex-shrink: 0;
+}
+
+/* ===== Photo Preview ===== */
+.couple-photo-preview {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--ap-surface);
+  margin-bottom: 12px;
+}
+
+.couple-photo-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: cover;
+}
+
+.couple-photo-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  background: var(--ap-primary-soft);
+  color: var(--ap-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 8px;
+  margin: 0;
+}
+
+.couple-photo-status svg {
+  flex-shrink: 0;
+}
+
+/* ===== Photo Upload Area ===== */
+.couple-photo-upload-area {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.couple-photo-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 24px;
+  background: var(--ap-surface);
+  border: 2px dashed var(--ap-primary);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.couple-photo-label:hover {
+  background: var(--ap-primary-soft);
+  border-style: solid;
+}
+
+.couple-photo-label:focus-visible {
+  outline: 2px solid var(--ap-primary);
+  outline-offset: 2px;
+}
+
+.couple-photo-label svg {
+  color: var(--ap-primary);
+  flex-shrink: 0;
+}
+
+.couple-photo-label span:first-of-type {
+  font-weight: 600;
+  color: var(--ap-primary);
+  font-size: 1rem;
+}
+
+.couple-photo-hint {
+  font-size: 0.8rem;
+  color: var(--ap-ink-light);
+}
+
+.couple-photo-input {
+  display: none;
+}
+
+/* ===== Photo Preview (before upload) ===== */
+.couple-photo-preview {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--ap-surface);
+  margin-bottom: 12px;
+}
+
+.couple-photo-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: cover;
+}
+
+.couple-photo-remove {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.couple-photo-remove:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.couple-photo-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  background: var(--ap-primary-soft);
+  color: var(--ap-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 8px;
+  margin: 0;
+}
+
+.couple-photo-status svg {
+  flex-shrink: 0;
+}
+
+/* ===== Photo Upload Area (empty state) ===== */
+.couple-photo-upload-area {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.couple-photo-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 40px 24px;
+  background: var(--ap-surface);
+  border: 2px dashed var(--ap-primary);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.couple-photo-label:hover {
+  background: var(--ap-primary-soft);
+  border-style: solid;
+}
+
+.couple-photo-label:focus-visible {
+  outline: 2px solid var(--ap-primary);
+  outline-offset: 2px;
+}
+
+.couple-photo-label svg {
+  color: var(--ap-primary);
+  flex-shrink: 0;
+}
+
+.couple-photo-label span:first-of-type {
+  font-weight: 600;
+  color: var(--ap-primary);
+  font-size: 1rem;
+}
+
+.couple-photo-hint {
+  font-size: 0.8rem;
+  color: var(--ap-ink-light);
+}
+
+.couple-photo-input {
+  display: none;
+}
+
+.couple-photo-preview {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--ap-surface);
+  margin-bottom: 12px;
+}
+
+.couple-photo-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: cover;
+}
+
+.couple-photo-remove {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.couple-photo-remove:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.couple-photo-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  background: var(--ap-primary-soft);
+  color: var(--ap-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 8px;
+  margin: 0;
+}
+
+.couple-photo-status svg {
+  flex-shrink: 0;
+}
+
+/* ===== Photo Help ===== */
+.couple-photo-help {
+  margin: 8px 0 0;
+  font-size: 0.75rem;
+  color: var(--ap-ink-light);
+  text-align: center;
+}
+
+/* ===== Actions ===== */
+.couple-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding-top: 16px;
+  border-top: 1px solid var(--ap-border);
+}
+
+.couple-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 48px;
+  min-width: 160px;
+}
+
+.couple-btn-primary {
+  background: var(--ap-primary);
+  color: #fff;
+}
+
+.couple-btn-primary:hover:not(:disabled) {
+  background: var(--ap-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(219, 39, 119, 0.3);
+}
+
+.couple-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.couple-btn-secondary {
+  background: var(--ap-surface);
+  color: var(--ap-ink);
+  border: 1px solid var(--ap-border);
+}
+
+.couple-btn-secondary:hover {
+  background: var(--ap-primary-soft);
+  border-color: var(--ap-primary);
+  color: var(--ap-primary);
+}
+
+.couple-btn svg {
+  flex-shrink: 0;
+}
+
+.couple-spinner-small {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: couple-spin 0.8s linear infinite;
+}
+
+/* ===== Messages ===== */
+.couple-message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+  animation: couple-slide-in 0.3s ease;
+}
+
+@keyframes couple-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.couple-message-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+}
+
+.couple-message-success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.couple-message svg {
+  flex-shrink: 0;
+}
+
+/* ===== Error State ===== */
+.couple-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 16px;
+  padding: 32px;
+  text-align: center;
+  color: var(--ap-ink-light);
+}
+
+.couple-error h2 {
+  color: var(--ap-primary);
+  margin: 0;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 640px) {
+  .couple-card {
+    padding: 20px;
+  }
+
+  .couple-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .couple-names {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .couple-person.groom {
+    flex-direction: column;
+  }
+
+  .couple-amp {
+    order: 2;
+  }
+
+  .couple-photos-section {
+    grid-template-columns: 1fr;
+  }
+
+  .couple-photo-upload {
+    padding: 16px;
+  }
+
+  .couple-photo-label {
+    padding: 24px 16px;
+  }
+
+  .couple-actions {
+    flex-direction: column;
+  }
+
+  .couple-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .couple-header {
+    padding: 16px 0;
+  }
+
+  .couple-header-content {
+    padding: 0 16px;
+  }
+
+  .couple-header h1 {
+    font-size: 1.25rem;
+  }
+
+  .couple-main {
+    padding: 16px;
+  }
+
+  .couple-card {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .couple-photo-upload {
+    padding: 16px;
+  }
+
+  .couple-photo-label {
+    padding: 20px 12px;
+  }
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .couple-spinner,
+  .couple-spinner-small {
+    animation: none;
+  }
+
+  .couple-message {
+    animation: none;
+  }
+
+  .couple-photo-label,
+  .couple-btn {
+    transition: none;
+  }
+}

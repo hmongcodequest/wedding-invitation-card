@@ -16,6 +16,11 @@
   --rose: #b76e79;
   --rose-light: #e8c4c9;
   --white: #ffffff;
+  /* App chrome accent tokens (pink + gold, matches landing/login/admin) */
+  --pink: #db2777;
+  --pink-dark: #be185d;
+  --pink-soft: #fdf2f8;
+  --pink-border: #fbcfe8;
 }
 
 body {
@@ -28,6 +33,9 @@ body {
 
 .app-shell {
   min-height: 100vh;
+  background:
+    radial-gradient(1000px 400px at 100% 0%, rgba(219, 39, 119, 0.06), transparent 55%),
+    var(--pink-soft);
 }
 
 /* ===== Toolbar (screen only) ===== */
@@ -35,9 +43,10 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(253, 248, 239, 0.95);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--gold-light);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--pink-border);
+  box-shadow: 0 2px 12px rgba(190, 24, 93, 0.06);
   padding: 12px 24px;
   display: flex;
   align-items: center;
@@ -47,9 +56,12 @@ body {
 }
 
 .toolbar-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-family: var(--font-playfair), var(--font-noto-lao), serif;
   font-size: 1.1rem;
-  color: var(--gold-dark);
+  color: var(--pink-dark);
   font-weight: 600;
   letter-spacing: 0.5px;
 }
@@ -62,31 +74,59 @@ body {
 }
 
 .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
   font-family: var(--font-noto-lao), sans-serif;
   font-size: 0.9rem;
+  min-height: 40px;
   padding: 8px 18px;
-  border-radius: 6px;
-  border: 1px solid var(--gold);
+  border-radius: 10px;
+  border: 1px solid var(--pink-border);
   background: var(--white);
-  color: var(--gold-dark);
+  color: var(--pink-dark);
   cursor: pointer;
   transition: all 0.2s ease;
   font-weight: 500;
+  text-decoration: none;
 }
 
 .btn:hover {
-  background: var(--gold);
-  color: var(--white);
+  background: var(--pink-soft);
+  border-color: var(--pink);
+  color: var(--pink-dark);
 }
 
 .btn-primary {
-  background: var(--gold);
+  background: var(--pink);
   color: var(--white);
+  border-color: var(--pink);
+  box-shadow: 0 6px 16px rgba(219, 39, 119, 0.24);
 }
 
 .btn-primary:hover {
-  background: var(--gold-dark);
-  border-color: var(--gold-dark);
+  background: var(--pink-dark);
+  border-color: var(--pink-dark);
+  color: var(--white);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn:disabled:hover {
+  background: var(--white);
+  border-color: var(--pink-border);
+  color: var(--pink-dark);
+}
+
+.btn-primary:disabled:hover {
+  background: var(--pink);
+  border-color: var(--pink);
+  color: var(--white);
 }
 
 .guest-select {
@@ -111,8 +151,8 @@ body {
   font-family: var(--font-noto-lao), sans-serif;
   font-size: 0.9rem;
   padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid var(--gold-light);
+  border-radius: 10px;
+  border: 1px solid var(--pink-border);
   background: var(--white);
   color: var(--ink);
   width: 100%;
@@ -122,8 +162,8 @@ body {
 
 .guest-search-input:focus {
   outline: none;
-  border-color: var(--gold);
-  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.25);
+  border-color: var(--pink);
+  box-shadow: 0 0 0 3px rgba(219, 39, 119, 0.16);
 }
 
 .guest-search-dropdown {
@@ -132,9 +172,9 @@ body {
   left: 0;
   right: 0;
   background: var(--white);
-  border: 1px solid var(--gold-light);
-  border-radius: 6px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--pink-border);
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(190, 24, 93, 0.12);
   max-height: 280px;
   overflow-y: auto;
   z-index: 200;
@@ -146,7 +186,7 @@ body {
   font-family: var(--font-noto-lao), sans-serif;
   font-size: 0.9rem;
   color: var(--ink);
-  border-bottom: 1px solid #f5efe2;
+  border-bottom: 1px solid var(--pink-soft);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -158,8 +198,8 @@ body {
 
 .guest-search-item:hover,
 .guest-search-item.active {
-  background: var(--gold-light);
-  color: var(--gold-dark);
+  background: var(--pink-soft);
+  color: var(--pink-dark);
 }
 
 .guest-search-empty {
@@ -174,8 +214,8 @@ body {
   font-family: var(--font-noto-lao), sans-serif;
   font-size: 0.9rem;
   padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid var(--gold-light);
+  border-radius: 10px;
+  border: 1px solid var(--pink-border);
   background: var(--white);
   color: var(--ink);
   cursor: pointer;
@@ -183,8 +223,51 @@ body {
 }
 
 .paper-select:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+  border-color: var(--pink);
+  box-shadow: 0 0 0 3px rgba(219, 39, 119, 0.16);
+}
+
+/* ===== Batch print menu (toolbar) ===== */
+.batch-menu {
+  position: relative;
+}
+
+.batch-menu-popup {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 250px;
+  background: var(--white);
+  border: 1px solid var(--pink-border);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(190, 24, 93, 0.14);
+  padding: 6px;
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.batch-menu-popup button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  font-family: var(--font-noto-lao), sans-serif;
+  font-size: 0.9rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.batch-menu-popup button:hover {
+  background: var(--pink-soft);
+  color: var(--pink-dark);
 }
 
 /* ===== A7 Traditional/Classic paper ===== */
@@ -306,22 +389,39 @@ body {
 
 .paper-a7 .wedding-date {
   margin: 7px 0;
-  padding: 7px 20px;
+  padding: 8px 18px;
+  min-width: 0;
 }
 
 .paper-a7 .date-label {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   letter-spacing: 2px;
 }
 
-.paper-a7 .date-value {
-  font-size: 1.55rem;
+.paper-a7 .date-weekday {
+  font-size: 0.95rem;
   margin-top: 3px;
 }
 
+.paper-a7 .date-day {
+  font-size: 1.9rem;
+}
+
+.paper-a7 .date-month {
+  font-size: 0.95rem;
+}
+
+.paper-a7 .date-years {
+  font-size: 0.75rem;
+  margin-top: 2px;
+}
+
+.paper-a7 .date-divider {
+  margin: 6px 0 3px;
+}
+
 .paper-a7 .time-value {
-  font-size: 1.05rem;
-  margin-top: 3px;
+  font-size: 0.95rem;
 }
 
 .paper-a7 .venue {
@@ -398,12 +498,14 @@ body {
 }
 
 .paper-a7 .info-card {
-  padding: 3px 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
 }
 
 .paper-a7 .info-icon {
-  font-size: 1.35rem;
-  margin-bottom: 2px;
+  width: 36px;
+  height: 36px;
+  margin-bottom: 3px;
 }
 
 .paper-a7 .info-label {
@@ -438,6 +540,24 @@ body {
   max-width: 900px;
   margin: 40px auto;
   padding: 0 20px;
+  position: relative;
+}
+
+/* Soft gold glow behind the card (screen only) */
+.card-container::before {
+  content: '';
+  position: absolute;
+  inset: -30px -10px;
+  background:
+    radial-gradient(560px 260px at 50% 18%, rgba(201, 162, 39, 0.12), transparent 62%),
+    radial-gradient(420px 200px at 82% 78%, rgba(219, 39, 119, 0.06), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.card-container > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* ===== Invitation Card ===== */
@@ -613,34 +733,94 @@ body {
 
 .wedding-date {
   margin: 20px 0;
-  padding: 16px 24px;
+  padding: 18px 30px;
   background: linear-gradient(135deg, var(--cream), var(--cream-dark));
   border: 1px solid var(--gold-light);
-  border-radius: 8px;
+  border-radius: 10px;
   display: inline-block;
+  text-align: center;
+  min-width: 270px;
 }
 
 .date-label {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--ink-light);
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   text-transform: uppercase;
 }
 
-.date-value {
+.date-weekday {
   font-family: var(--font-playfair), var(--font-noto-lao), serif;
-  font-size: 1.6rem;
+  font-size: 1.15rem;
   font-weight: 600;
+  color: var(--rose);
+  margin-top: 6px;
+  letter-spacing: 1px;
+}
+
+.date-value {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.date-day {
+  font-family: var(--font-playfair), var(--font-noto-lao), serif;
+  font-size: 2.4rem;
+  font-weight: 700;
   color: var(--gold-dark);
+  line-height: 1.1;
+}
+
+.date-month {
+  font-family: var(--font-noto-lao), sans-serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.date-years {
+  font-size: 0.85rem;
+  color: var(--ink-light);
+  letter-spacing: 1px;
   margin-top: 4px;
+}
+
+.date-years-sep {
+  margin: 0 6px;
+  color: var(--gold);
+}
+
+.date-divider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 6px;
+}
+
+.date-divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--gold-light),
+    transparent
+  );
+}
+
+.date-divider-icon {
+  color: var(--gold);
+  font-size: 0.8rem;
 }
 
 .time-value {
   font-family: var(--font-noto-lao), sans-serif;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 500;
   color: var(--rose);
-  margin-top: 6px;
 }
 
 .venue {
@@ -762,16 +942,26 @@ body {
 }
 
 .info-card {
-  background: var(--cream);
+  background: linear-gradient(180deg, var(--white), var(--cream));
   border: 1px solid var(--gold-light);
-  border-radius: 8px;
-  padding: 16px;
+  border-radius: 12px;
+  padding: 18px 16px;
   text-align: center;
+  box-shadow: 0 4px 14px rgba(201, 162, 39, 0.08);
 }
 
 .info-icon {
-  font-size: 1.6rem;
-  margin-bottom: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--cream), var(--cream-dark));
+  border: 1px solid var(--gold-light);
+  color: var(--gold-dark);
+  box-shadow: 0 2px 8px rgba(201, 162, 39, 0.18);
 }
 
 .info-label {
@@ -825,6 +1015,307 @@ body {
   margin-top: 4px;
 }
 
+/* ===== Template layout variants ===== */
+/* Modern: clean minimal, thin accent lines, round photo, no corners */
+.invitation-card.variant-modern .card-frame {
+  border: none;
+  border-top: 3px solid var(--gold);
+  border-bottom: 1px solid var(--gold-light);
+  border-radius: 0;
+  background: linear-gradient(180deg, var(--white) 0%, var(--cream) 100%);
+}
+
+.invitation-card.variant-modern .corner {
+  display: none;
+}
+
+.invitation-card.variant-modern .ornament-top,
+.invitation-card.variant-modern .ornament-bottom {
+  font-size: 1.1rem;
+  letter-spacing: 6px;
+}
+
+.invitation-card.variant-modern .guest-name {
+  letter-spacing: 1px;
+}
+
+.invitation-card.variant-modern .heart-photo-wrap::before {
+  clip-path: none;
+  border-radius: 50%;
+}
+
+.invitation-card.variant-modern .heart-photo {
+  clip-path: none;
+  border-radius: 50%;
+}
+
+/* Floral: soft rounded frame, gentle border, no corners */
+.invitation-card.variant-floral .card-frame {
+  border: 2px solid var(--gold-light);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(201, 162, 39, 0.06), transparent 60%),
+    linear-gradient(180deg, var(--cream) 0%, var(--white) 30%, var(--white) 70%, var(--cream) 100%);
+}
+
+.invitation-card.variant-floral .corner {
+  display: none;
+}
+
+.invitation-card.variant-floral .ornament-top,
+.invitation-card.variant-floral .ornament-bottom {
+  font-size: 1.4rem;
+  letter-spacing: 10px;
+}
+
+/* Luxury: single gold frame, elegant spacing, no corners */
+.invitation-card.variant-luxury .card-frame {
+  border: 2px solid var(--gold);
+  border-radius: 4px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(201, 162, 39, 0.12), transparent 60%),
+    linear-gradient(180deg, var(--cream) 0%, var(--white) 50%, var(--cream) 100%);
+}
+
+.invitation-card.variant-luxury .corner {
+  display: none;
+}
+
+.invitation-card.variant-luxury .guest-name {
+  letter-spacing: 2px;
+}
+
+.invitation-card.variant-luxury .ornament-top,
+.invitation-card.variant-luxury .ornament-bottom {
+  letter-spacing: 12px;
+}
+
+/* ===== Envelope (ຊອງບັດເຊີນ) ===== */
+.envelope {
+  background: var(--white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--gold-light);
+  position: relative;
+  width: 1123px;
+  height: 794px;
+}
+
+.envelope-frame {
+  border: 3px double var(--gold);
+  border-radius: 8px;
+  margin: 14px;
+  padding: 30px 40px;
+  position: relative;
+  width: 1095px;
+  height: 766px;
+  box-sizing: border-box;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(201, 162, 39, 0.08), transparent 60%),
+    linear-gradient(180deg, var(--cream) 0%, var(--white) 30%, var(--white) 70%, var(--cream) 100%);
+}
+
+/* Front: return address, stamp box, guest name, ornament */
+.envelope-return {
+  position: absolute;
+  top: 34px;
+  left: 40px;
+  text-align: left;
+  font-size: 0.95rem;
+  color: var(--ink-light);
+  line-height: 1.5;
+}
+
+.envelope-return-name {
+  font-family: var(--font-playfair), var(--font-noto-lao), serif;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.envelope-stamp {
+  position: absolute;
+  top: 34px;
+  right: 40px;
+  width: 110px;
+  height: 130px;
+  border: 2px dashed var(--gold);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-dark);
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.envelope-guest {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.envelope-to-label {
+  font-size: 0.9rem;
+  color: var(--ink-light);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.envelope-guest-name {
+  font-family: var(--font-playfair), var(--font-noto-lao), serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--gold-dark);
+  line-height: 1.3;
+}
+
+.envelope-guest-position {
+  font-size: 1rem;
+  color: var(--rose);
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+.envelope-ornament {
+  position: absolute;
+  bottom: 34px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.6rem;
+  color: var(--gold);
+  letter-spacing: 8px;
+}
+
+/* Back: flap + monogram */
+.envelope-back {
+  overflow: hidden;
+}
+
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 220px;
+  background: linear-gradient(180deg, var(--cream-dark) 0%, var(--cream) 100%);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.envelope-back-content {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.envelope-monogram {
+  width: 120px;
+  height: 120px;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+  background: radial-gradient(circle at 50% 30%, rgba(201, 162, 39, 0.1), transparent 70%);
+}
+
+.envelope-monogram-amp {
+  font-family: var(--font-playfair), var(--font-noto-lao), serif;
+  font-size: 3rem;
+  color: var(--gold-dark);
+}
+
+.envelope-back-names {
+  font-family: var(--font-playfair), var(--font-noto-lao), serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.envelope-back-role {
+  font-size: 0.9rem;
+  color: var(--ink-light);
+  letter-spacing: 3px;
+  margin-top: 6px;
+}
+
+/* Envelope layout variant overrides */
+.envelope.variant-modern .envelope-frame {
+  border: none;
+  border-top: 3px solid var(--gold);
+  border-bottom: 1px solid var(--gold-light);
+  border-radius: 0;
+  background: linear-gradient(180deg, var(--white) 0%, var(--cream) 100%);
+}
+
+.envelope.variant-modern .corner {
+  display: none;
+}
+
+.envelope.variant-modern .envelope-ornament {
+  font-size: 1.1rem;
+  letter-spacing: 6px;
+}
+
+.envelope.variant-floral .envelope-frame {
+  border: 2px solid var(--gold-light);
+  border-radius: 18px;
+}
+
+.envelope.variant-floral .corner {
+  display: none;
+}
+
+.envelope.variant-floral .envelope-ornament {
+  font-size: 1.4rem;
+  letter-spacing: 10px;
+}
+
+.envelope.variant-luxury .envelope-frame {
+  border: 2px solid var(--gold);
+  border-radius: 4px;
+}
+
+.envelope.variant-luxury .corner {
+  display: none;
+}
+
+.envelope.variant-luxury .envelope-ornament {
+  letter-spacing: 12px;
+}
+
+/* Screen preview (scaled to fit the card container) */
+.envelope-preview {
+  width: 809px;
+  height: 572px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.envelope-preview .envelope {
+  transform: scale(0.72);
+  transform-origin: top left;
+}
+
+/* Batch envelopes — hidden on screen, only shown in print */
+.batch-envelope {
+  display: none;
+}
+
+/* ===== Batch Print (all cards at once) ===== */
+/* Hidden on screen — only shown inside @media print when batch-active */
+.batch-print {
+  display: none;
+}
+
 /* ===== Card Size Info (screen only) ===== */
 .size-info-section {
   max-width: 900px;
@@ -834,20 +1325,20 @@ body {
 
 .size-info-card {
   background: var(--white);
-  border-radius: 12px;
-  border: 1px solid var(--gold-light);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  border: 1px solid var(--pink-border);
+  box-shadow: 0 10px 30px rgba(190, 24, 93, 0.08);
   padding: 24px 30px;
 }
 
 .size-info-title {
-  font-family: var(--font-playfair), var(--font-noto-lao), serif;
-  font-size: 1.2rem;
-  color: var(--gold-dark);
-  margin-bottom: 16px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
+  font-family: var(--font-playfair), var(--font-noto-lao), serif;
+  font-size: 1.2rem;
+  color: var(--pink-dark);
+  margin-bottom: 16px;
 }
 
 .size-info-grid {
@@ -857,9 +1348,9 @@ body {
 }
 
 .size-info-item {
-  background: var(--cream);
-  border: 1px solid var(--gold-light);
-  border-radius: 8px;
+  background: var(--pink-soft);
+  border: 1px solid var(--pink-border);
+  border-radius: 10px;
   padding: 14px 16px;
   text-align: center;
 }
@@ -881,8 +1372,34 @@ body {
   font-size: 0.9rem;
   color: var(--ink-light);
   line-height: 1.8;
-  border-top: 1px dashed var(--gold-light);
+  border-top: 1px dashed var(--pink-border);
   padding-top: 12px;
+}
+
+/* ===== Batch print done banner ===== */
+.batch-done-banner {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: var(--white);
+  border: 1px solid var(--pink-border);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(190, 24, 93, 0.18);
+  padding: 14px 20px;
+  max-width: min(92vw, 620px);
+}
+
+.batch-done-text {
+  font-size: 0.95rem;
+  color: var(--ink);
+  font-weight: 500;
 }
 
 /* ===== Guest List Section (screen only) ===== */
@@ -894,16 +1411,19 @@ body {
 
 .guest-list-card {
   background: var(--white);
-  border-radius: 12px;
-  border: 1px solid var(--gold-light);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  border: 1px solid var(--pink-border);
+  box-shadow: 0 10px 30px rgba(190, 24, 93, 0.08);
   padding: 30px;
 }
 
 .guest-list-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-family: var(--font-playfair), var(--font-noto-lao), serif;
   font-size: 1.4rem;
-  color: var(--gold-dark);
+  color: var(--pink-dark);
   margin-bottom: 20px;
   text-align: center;
 }
@@ -914,23 +1434,23 @@ body {
 }
 
 .guest-table th {
-  background: var(--cream);
-  color: var(--gold-dark);
+  background: var(--pink-soft);
+  color: var(--pink-dark);
   font-weight: 600;
   font-size: 0.9rem;
   padding: 10px 12px;
   text-align: left;
-  border-bottom: 2px solid var(--gold-light);
+  border-bottom: 2px solid var(--pink-border);
 }
 
 .guest-table td {
   padding: 10px 12px;
-  border-bottom: 1px solid var(--cream-dark);
+  border-bottom: 1px solid var(--pink-soft);
   font-size: 0.95rem;
 }
 
 .guest-table tr:hover td {
-  background: var(--cream);
+  background: var(--pink-soft);
 }
 
 .guest-table .num {
@@ -952,8 +1472,8 @@ body {
   font-family: var(--font-noto-lao), sans-serif;
   font-size: 0.9rem;
   padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid var(--gold-light);
+  border-radius: 10px;
+  border: 1px solid var(--pink-border);
   background: var(--white);
   color: var(--ink);
   outline: none;
@@ -962,8 +1482,8 @@ body {
 
 .guest-filters .filter-input:focus,
 .guest-filters .filter-select:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+  border-color: var(--pink);
+  box-shadow: 0 0 0 3px rgba(219, 39, 119, 0.16);
 }
 
 .guest-filters .filter-input {
@@ -977,12 +1497,15 @@ body {
 }
 
 .guest-filters .filter-clear {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-family: var(--font-noto-lao), sans-serif;
   font-size: 0.85rem;
   padding: 8px 14px;
-  border-radius: 6px;
-  border: 1px solid var(--gold-light);
-  background: var(--cream);
+  border-radius: 10px;
+  border: 1px solid var(--pink-border);
+  background: var(--pink-soft);
   color: var(--ink-light);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -1001,7 +1524,7 @@ body {
 }
 
 .guest-count strong {
-  color: var(--gold-dark);
+  color: var(--pink-dark);
 }
 
 .guest-table tr.hidden-row {
@@ -1010,6 +1533,9 @@ body {
 
 /* ===== Print Status Button ===== */
 .print-status-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-family: var(--font-noto-lao), sans-serif;
   font-size: 0.8rem;
   padding: 5px 12px;
@@ -1064,8 +1590,8 @@ body {
   min-width: 34px;
   height: 34px;
   padding: 0 10px;
-  border-radius: 6px;
-  border: 1px solid var(--gold-light);
+  border-radius: 8px;
+  border: 1px solid var(--pink-border);
   background: var(--white);
   color: var(--ink);
   cursor: pointer;
@@ -1073,14 +1599,14 @@ body {
 }
 
 .page-btn:hover:not(:disabled) {
-  background: var(--cream);
-  border-color: var(--gold);
+  background: var(--pink-soft);
+  border-color: var(--pink);
 }
 
 .page-btn.active {
-  background: var(--gold);
+  background: var(--pink);
   color: var(--white);
-  border-color: var(--gold);
+  border-color: var(--pink);
   font-weight: 600;
 }
 
@@ -1098,8 +1624,8 @@ body {
   font-family: var(--font-noto-lao), sans-serif;
   font-size: 0.85rem;
   padding: 6px 10px;
-  border-radius: 6px;
-  border: 1px solid var(--gold-light);
+  border-radius: 8px;
+  border: 1px solid var(--pink-border);
   background: var(--white);
   color: var(--ink);
   cursor: pointer;
@@ -1107,8 +1633,42 @@ body {
 }
 
 .limit-select:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+  border-color: var(--pink);
+  box-shadow: 0 0 0 3px rgba(219, 39, 119, 0.16);
+}
+
+/* ===== Focus states (keyboard) ===== */
+.app-shell a:focus-visible,
+.app-shell button:focus-visible,
+.app-shell input:focus-visible,
+.app-shell select:focus-visible {
+  outline: 2px solid var(--pink);
+  outline-offset: 2px;
+}
+
+/* ===== Spinner ===== */
+.spin {
+  animation: ipw-spin 0.9s linear infinite;
+}
+
+@keyframes ipw-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .page-btn,
+  .guest-search-item,
+  .filter-clear,
+  .print-status-btn {
+    transition: none;
+  }
+
+  .spin {
+    animation: none;
+  }
 }
 
 /* ===== Print Styles ===== */
@@ -1158,6 +1718,10 @@ body {
     padding: 0;
   }
 
+  .card-container::before {
+    display: none;
+  }
+
   .invitation-card {
     box-shadow: none;
     border: none;
@@ -1191,8 +1755,12 @@ body {
     font-size: 1.6rem;
   }
 
-  .date-value {
-    font-size: 1.4rem;
+  .date-day {
+    font-size: 2rem;
+  }
+
+  .date-month {
+    font-size: 1rem;
   }
 
   .time-value {
@@ -1242,6 +1810,94 @@ body {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
+
+  /* ===== Batch print (all cards at once) ===== */
+  .batch-active .card-container {
+    display: none !important;
+  }
+
+  .batch-active .batch-print {
+    display: block;
+  }
+
+  .batch-print .card-frame {
+    page-break-after: always;
+    break-inside: avoid;
+  }
+
+  /* Covers-only mode: hide the identical content page for every guest */
+  .batch-covers .batch-print .content-page {
+    display: none !important;
+  }
+
+  /* No trailing blank page after the very last card */
+  .batch-print > .invitation-card:last-child .card-frame:last-child {
+    page-break-after: auto;
+  }
+
+  /* Covers-only mode: last cover should not force a trailing page */
+  .batch-covers .batch-print > .invitation-card:last-child .card-frame:first-child {
+    page-break-after: auto;
+  }
+
+  /* ===== Envelope print (A4 landscape) ===== */
+  @page envelopePage {
+    size: A4 landscape;
+    margin: 10mm;
+  }
+
+  /* Single envelope: reset the scaled screen preview */
+  .envelope-active .envelope-preview {
+    width: auto;
+    height: auto;
+    overflow: visible;
+    margin: 0;
+  }
+
+  .envelope-active .envelope-preview .envelope {
+    transform: none;
+  }
+
+  .envelope-active .envelope,
+  .envelope-batch .envelope {
+    width: auto;
+    height: auto;
+    overflow: visible;
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    page: envelopePage;
+  }
+
+  .envelope-active .envelope-frame,
+  .envelope-batch .envelope-frame {
+    width: 277mm;
+    height: 190mm;
+    min-height: 190mm;
+    margin: 0;
+    padding: 10mm 14mm;
+    box-shadow: none;
+    page-break-after: always;
+    break-inside: avoid;
+  }
+
+  .envelope-active .envelope-frame:last-child {
+    page-break-after: auto;
+  }
+
+  /* Batch envelopes: hide the card, show every guest's envelope */
+  .envelope-batch .card-container {
+    display: none !important;
+  }
+
+  .envelope-batch .batch-envelope {
+    display: block;
+  }
+
+  /* No trailing blank page after the very last envelope */
+  .envelope-batch .batch-envelope > .envelope:last-child .envelope-frame:last-child {
+    page-break-after: auto;
+  }
 }
 
 /* ===== Responsive ===== */
@@ -1263,8 +1919,12 @@ body {
     font-size: 2rem;
   }
 
-  .date-value {
-    font-size: 1.3rem;
+  .date-day {
+    font-size: 1.8rem;
+  }
+
+  .date-month {
+    font-size: 0.95rem;
   }
 
   .heart-photo-wrap {

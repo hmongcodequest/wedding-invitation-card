@@ -7,6 +7,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { createRequire } from "node:module";
 import { db } from "./db";
+import { seedSchedule } from "./seed";
 import {
   insertWeddingData,
   loadWeddingDataFromJson,
@@ -90,7 +91,7 @@ export interface MigrateResult {
  */
 export function migrateFromLegacy(options?: { force?: boolean }): MigrateResult {
   const { c: weddingCount } = db
-    .prepare("SELECT COUNT(*) AS c FROM wedding")
+    .prepare("SELECT COUNT(*) AS c FROM weddings")
     .get() as { c: number };
   const { c: guestCount } = db
     .prepare("SELECT COUNT(*) AS c FROM guests")
@@ -101,7 +102,7 @@ export function migrateFromLegacy(options?: { force?: boolean }): MigrateResult 
       return { migrated: false, guests: 0 };
     }
     const wipe = db.transaction(() => {
-      db.exec("DELETE FROM guests; DELETE FROM wedding;");
+      db.exec("DELETE FROM guests; DELETE FROM schedule; DELETE FROM weddings;");
     });
     wipe();
   }
@@ -111,6 +112,7 @@ export function migrateFromLegacy(options?: { force?: boolean }): MigrateResult 
     return { migrated: false, guests: 0 };
   }
 
-  const guests = insertWeddingData(data);
+  const { weddingId, guests } = insertWeddingData(data);
+  seedSchedule(weddingId);
   return { migrated: true, guests };
 }

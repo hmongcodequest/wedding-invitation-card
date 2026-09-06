@@ -1,17 +1,20 @@
 /**
- * One-time migration: legacy/data.json + legacy/wedding-invitation-card.xlsx → SQLite.
+ * One-time migration: legacy/data.json + legacy/wedding-invitation-card.xlsx → SQLite (V2).
  *
  * Usage:
  *   npx tsx scripts/migrate-data.ts          # skip if data already exists
- *   npx tsx scripts/migrate-data.ts --force  # wipe wedding/guests and re-import
+ *   npx tsx scripts/migrate-data.ts --force  # wipe weddings/guests and re-import
  */
 import path from "node:path";
 import { db } from "../lib/db";
-import { initSchema, seedSchedule } from "../lib/seed";
+import { initSchema, ensureIndexes, seedUsers } from "../lib/seed";
+import { migrateV2 } from "../lib/migrate-v2";
 import { migrateFromLegacy } from "../lib/migrate";
 
 initSchema();
-seedSchedule();
+migrateV2();
+ensureIndexes();
+seedUsers();
 
 const force = process.argv.includes("--force");
 const result = migrateFromLegacy({ force });
